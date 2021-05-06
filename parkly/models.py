@@ -17,11 +17,10 @@ class Profile(models.Model):
     user_type = models.CharField( max_length=255, choices=choices , null=True)
     registration_date = models.DateTimeField(auto_now_add=True)
     contact_number = models.CharField(max_length=12)
-    activated = models.BooleanField(default=False)
+    activated = models.BooleanField(default=False) #Day 
 
     def __str__(self):
         return self.name
-
 
 
 class Lot(models.Model):
@@ -32,8 +31,6 @@ class Lot(models.Model):
     def __str__(self):
         return self.name
 
-
-
 class Parking(models.Model):
 
     lot = models.ForeignKey(Lot , related_name="lot" ,on_delete=models.CASCADE, null=True) ## each parking has one lot
@@ -41,11 +38,10 @@ class Parking(models.Model):
     location = models.CharField(max_length=255, null=True)
     available = models.BooleanField(default=True)
     is_reentry_allowed = models.BooleanField(null=True)
-    price =  models.DecimalField(null=False)
+    price =  models.DecimalField(max_digits=10,null=False,decimal_places=2)
    
     def __str__(self):
         return self.parkID
-
 
 
 class Reservation(models.Model):
@@ -54,7 +50,7 @@ class Reservation(models.Model):
     duration =  models.PositiveIntegerField(default=1)
     cost= models.PositiveIntegerField(null=False)
     is_paid = models.BooleanField(default=False)
-    user = models.ForeignKey(Profile , related_name="user" ,on_delete=models.CASCADE, null=True) ## user might have more than one reservation
+    user = models.ForeignKey(Profile , related_name="profile" ,on_delete=models.CASCADE, null=True) ## user might have more than one reservation
     parking = models.OneToOneField(Parking , related_name="parking" ,on_delete=models.CASCADE, null=True) ## each parking has one reservation
 
     def __str__(self):
