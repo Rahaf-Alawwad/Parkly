@@ -35,7 +35,6 @@ class Parking(models.Model):
 
     lot = models.ForeignKey(Lot , related_name="lot" ,on_delete=models.CASCADE, null=True) ## each parking has one lot
     park_ID = models.CharField(max_length=4, null=True, unique=True)
-    location = models.CharField(max_length=255, null=True)
     available = models.BooleanField(default=True)
     is_reentry_allowed = models.BooleanField(null=True)
     price =  models.DecimalField(max_digits=10,null=False,decimal_places=2)

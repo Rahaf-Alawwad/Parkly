@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<script>
+    function createCanvas() {
+        var windWidth =screen.width;
+        var windHeight =screen.height;
+        var available_parking = document.getElementById("available_parking").value;
+        var canvas = document.getElementById("lot-canvas");
+        canvas.width=windWidth;
+        canvas.height=windHeight;
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx = canvas.getContext("2d");
+        var img = new Image()
+        img.src = "{%static 'uploads/parking.jpg' %}"
+        img.onload = function () {
+            var width = windWidth<windHeight? windWidth/4: 140;
+            var height = windWidth<windHeight? windHeight/(available_parking/4):180;
+            var counter=0
+            var offsetY =0;
+            
+            for (var i = 0; i < parseInt(available_parking); i++) {
+                console.log(counter)
+                if(counter>=4){
+                    offsetY+=height
+                    counter=0;
+                }
+                ctx.beginPath();
+                ctx.rect(0 + (counter * width), 5+offsetY, width, height);
+                ctx.drawImage(img, 0 + (counter * width), 5+offsetY, width, height);
+                ctx.stroke();
+                counter++
+
+            };
+
+        }
+
+    }
+</script>
+
+<input id="name" placeholder="Lot name" type="text">
+<input id="available_parking" placeholder="How many parkings?"  onfocus="this.value=''"  type="text">
+<label>Reentry allowed?</label>
+<input id="is_reentry_allowed" type="checkbox">
+<input id="price" placeholder="Price per hour" type="text">
+<button onclick="createCanvas()">
+    Create virtual lot
+</button>
+<div style="text-align: center;">
+<canvas id="lot-canvas">
+</div>
+</canvas>
+
+
+
+
+
+
+
+
+
+{% endblock %}
