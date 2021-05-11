@@ -16,6 +16,7 @@
             canvas.height = windHeight;
             var ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            $('#park-div').empty();
             ctx = canvas.getContext("2d");
             var emptParing = new Image()
             var occupiedParing = new Image()
@@ -52,7 +53,7 @@
                     }
                     else {
 
-                        $('#lot-div').append($('<button/>', {
+                        $('#park-div').append($('<button/>', {
                             text: 'Reserve',
                             id: i + 1,
                             css: { position: "absolute", top: (startPointTop + offsetY) + height, left: startPointLeft + (counter * width), backgroundColor: "green", color: "white", borderRadius: "50px" , border:"none", padding:"10px"}, 
@@ -87,7 +88,8 @@
     Create virtual lot
 </button>
 <div id="lot-div" style="z-index:1;">
-    <canvas id="lot-canvas">
+    <div id="park-div"></div>
+    <canvas id="lot-canvas" style="z-index: 1;">
 </div>
 </canvas>
 

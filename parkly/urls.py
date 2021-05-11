@@ -4,6 +4,7 @@ from parkly import views
 
 urlpatterns = [
     path('' , views.home , name= "home" ),
-    path('owner/register' , views.registerParking , name= "registerParking" ),
+    path('lot/register' , views.registerParking , name= "registerParking" ),
+    path('reserve/' , views.reserveParking , name= "reserveParking" ),
     
 ]
