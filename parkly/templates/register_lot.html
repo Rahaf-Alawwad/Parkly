@@ -18,11 +18,10 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             $('#park-div').empty();
             ctx = canvas.getContext("2d");
-            var emptParing = new Image()
-            var occupiedParing = new Image()
-            emptParing.src = "{%static 'uploads/parking.jpg' %}"
-            occupiedParing.src = "{%static 'uploads/occupied.png' %}"
-            occupiedParing.onload = function () {
+            var emptyParking =new Image()
+           
+            emptyParking.src = "{%static 'uploads/parking.jpg' %}"
+            emptyParking.onload = function () {
                 var width, height
                 if (windWidth < windHeight) {
                     width = windWidth / 4
@@ -48,10 +47,6 @@
                     }
                     ctx.beginPath();
                     ctx.rect((counter * width), 5 + offsetY, width, height);
-                    if (counter == 2) {
-                        ctx.drawImage(occupiedParing, (counter * width), 5 + offsetY, width, height);
-                    }
-                    else {
 
                         $('#park-div').append($('<button/>', {
                             text: 'Reserve',
@@ -64,8 +59,8 @@
                                 $(this).css({"background-color":"green", "color":"white"});
                             })
                         }));
-                        ctx.drawImage(emptParing, (counter * width), 5 + offsetY, width, height);
-                    }
+                        ctx.drawImage(emptyParking, (counter * width), 5 + offsetY, width, height);
+                    
                     ctx.stroke();
                     counter++
 

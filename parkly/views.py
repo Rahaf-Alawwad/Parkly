@@ -5,9 +5,10 @@ from django.db.models import Q
 # Create your views here.
 
 def home(request):
-    return  render(request,'home.html' , {}) 
+    return render(request,'home.html' , {}) 
 
-
+def profile(request):
+    return render(request,'profile2.html' , {})     
 
 
 def registerParking(request):
@@ -32,4 +33,4 @@ def reserveParking(request):
         print("available_parkings: ",available_parkings)
         return render(request,'reserve.html' , {"available_parkings":available_parkings, "lot_parkings":lot_parkings}) 
     else:
-        return render(request,'reserve.html' , {})
+        return render(request,'reserve.html' , {"available_parkings":[], "lot_parkings":[]})
