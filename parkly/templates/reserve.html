@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<style>
+    .flippedImage{
+
+        transform: scaleX(-1);
+
+    }
+</style>
+<script>
+    $(document).ready(function() { 
+        available_parkings =  {{available_parkings}}//$('#available_parkings').text().split(',')
+        if (available_parkings.length>0){
+        var windWidth = screen.width;
+        var windHeight = screen.height;
+        var canvas = document.getElementById("lot-canvas");
+        canvas.width = windWidth;
+        canvas.height = windHeight;
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        $('#park-div').empty();
+        ctx = canvas.getContext("2d");
+        var emptyParking =document.createElement("img");
+        var occupiedParking = new Image()
+        emptyParking.setAttribute("src","{%static 'uploads/parking.jpg' %}")
+        emptyParking.setAttribute("style","filter: brightness(0.6)contrast(3.4)hue-rotate(217deg)saturate(9.9);")
+        occupiedParking.src = "{%static 'uploads/occupied.png' %}"
+        emptyParking.onload = function () {
+            occupiedParking.onload = function () {
+            var width, height
+            if (windWidth < windHeight) {
+                width = windWidth / 4
+                height = windHeight / (available_parkings)
+                startPointTop = 100
+                startPointLeft = 10
+            }
+            else {
+                width = 140;
+                height = 180;
+                startPointTop = 5
+                startPointLeft = 35
+            }
+
+            var counter = 0
+            var offsetY = 0;
+
+            for (var i = 0; i < available_parkings.length; i++) {
+  
+                if (counter >= 4) {
+                    offsetY += height
+                    counter = 0;
+                  
+                   
+                }
+                ctx.beginPath();
+                ctx.rect((counter * width), 5 + offsetY, width, height);
+                if (available_parkings[i]== 1) {
+                    ctx.drawImage(occupiedParking, (counter * width), 5 + offsetY, width, height);
+                }
+                else {
+
+                    $('#park-div').append($('<button/>', {
+                        text: 'Reserve',
+                        id: i + 1,
+                        css: { position: "absolute", top: (startPointTop + offsetY) + height+height/2, left: startPointLeft + (counter * width), backgroundColor: "green", color: "white", borderRadius: "50px", border: "none", padding: "10px" },
+                        hover: (function () {
+                            $(this).css({ "background-color": "yellow", "color": "black" });
+                        }),
+                        mouseleave: (function () {
+                            $(this).css({ "background-color": "green", "color": "white" });
+                        })
+                    }));
+                    ctx.drawImage(emptyParking, (counter * width), 5 + offsetY, width, height);
+                }
+                ctx.stroke();
+                counter++
+
+            };
+
+        }
+    }
+    }
+    })
+</script>
+
+
+<h1> Reserve a parking </h1>
+<input id="available_parkings"hidden="hidden" value={{available_parkings}}/>
+<form action="{% url 'reserveParking'%}" method="POST">
+{% csrf_token %}
+<input type="time" id="timeFrom" name="timeFrom">
+<input type="time" id="timeTo" name="timeTo">
+<input type="date" id="date" name="date">
+
+
+<button type="submit" class="btn btn-outline-success">
+    Show Available Parkings 
+</button>
+</form>
+
+<div id="lot-div" style="z-index:1;">
+    <div id="park-div"></div>
+    <canvas  id="lot-canvas" style="z-index: 1;">
+</div>
+</canvas>
+{% endblock %}
