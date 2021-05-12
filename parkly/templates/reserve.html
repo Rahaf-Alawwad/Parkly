@@ -22,10 +22,9 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         $('#park-div').empty();
         ctx = canvas.getContext("2d");
-        var emptyParking =document.createElement("img");
+        var emptyParking =new Image()
         var occupiedParking = new Image()
-        emptyParking.setAttribute("src","{%static 'uploads/parking.jpg' %}")
-        emptyParking.setAttribute("style","filter: brightness(0.6)contrast(3.4)hue-rotate(217deg)saturate(9.9);")
+        emptyParking.src ="{%static 'uploads/parking2.jpg' %}"
         occupiedParking.src = "{%static 'uploads/occupied.png' %}"
         emptyParking.onload = function () {
             occupiedParking.onload = function () {
