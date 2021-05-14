@@ -104,7 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Zeta_project/static/'),
+]
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
