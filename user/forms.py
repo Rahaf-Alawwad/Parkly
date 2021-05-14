@@ -32,7 +32,7 @@ class RegistrationForm(UserCreationForm):
 
 class UserAuthForm(forms.ModelForm):
     password = forms.CharField(label='Password' , widget=forms.PasswordInput)
-
+    
     class Meta:
         model = User
         fields= ('username' , 'password')

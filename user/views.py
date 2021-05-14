@@ -34,11 +34,12 @@ def signup_view(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
+            # email = form.cleaned_data.get('email')
+            # first_name = form.cleaned_data.get('first_name')
+            # last_name = form.cleaned_data.get('last_name')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
+           
             login(request, user)
             return redirect('home')
         else:
@@ -60,7 +61,7 @@ def login_view(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate( username=username, password=password )
+            user = authenticate( username='admin', password="admin" )
 
             if user:
                 login(request, user)

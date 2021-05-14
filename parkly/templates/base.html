@@ -65,7 +65,8 @@
 
             <div class="topnav">
                 <div class="search-container">
-                    <form action="/action_page.php">
+                    <form method="POST" action="{% url 'search' %}">
+                        {% csrf_token %}
                         <input style="font-size:2.3vh" type="text" placeholder="Search venues" name="search">
                         <button class="btn btn-outline-light m-2" type="submit" style="height:4vh"><i
                                 class="fa fa-search"></i></button>

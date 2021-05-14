@@ -4,6 +4,7 @@ from .models import Reservation, Parking,Lot,Profile
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from .filters import LotFilter
 # Create your views here.
 
 def home(request):
@@ -41,3 +42,15 @@ def reserveParking(request):
         return render(request,'reserve.html' , {"available_parkings":available_parkings, "lot_parkings":lot_parkings}) 
     else:
         return render(request,'reserve.html' , {"available_parkings":[], "lot_parkings":[]})
+
+@login_required()
+def search(request):
+    lots=Lot.objects.all()
+    filter= LotFilter(request.GET, queryset=lots)
+    if (request.method == "POST"): 
+        lotsFilter=[Lot.objects.get(name=request.POST.get("search"))]
+    else:
+        lotsFilter=filter.qs
+    context={"filter":filter,"lotsFilter":lotsFilter}
+    return render (request, 'search.html',context)
+

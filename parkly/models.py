@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime,date,time
 
-from django.contrib.auth.models import User
+from user.models import User
 
 # Create your models here.
 choices = (
@@ -28,6 +28,7 @@ class Profile(models.Model):
 
 class Lot(models.Model):
     name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, null=True)
     image = models.CharField(max_length=255, null=True)
     available_parking = models.PositiveIntegerField(null=False)
     owner = models.OneToOneField(Profile , related_name="owner" ,on_delete=models.CASCADE, null=True) ## each lot has one owner

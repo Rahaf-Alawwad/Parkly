@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Search Results </h1>
+
+
+<form method="GET">
+{% csrf_token %}
+{{filter.form}}
+<button type="submit">Filter</button>
+</form>
+
+{% for lots in lotsFilter%}
+
+<div class="card" style="width:400px; margin:20px; display:inline-block">
+    <img class="card-img-top"
+        src="{{lots.image}}" alt="Card image" height="250px">
+    <div class="card-body">
+        <h4 class="card-title">{{lots.name }}</h4>
+        <p class="card-text">{{lots.location }}</p>
+        <a href="#" class="btn btn-primary">Check out</a>
+    </div>
+</div>
+
+ {% endfor %}
+{% endblock %}
