@@ -2,11 +2,9 @@
 {% block content %}
 <h1> SIGN UP </h1>
 <form action="" method="POST">
-{% comment %} {% csrf_token %}
-{{form.as_p}}
-<input type="submit"> {% endcomment %}
+
     {% csrf_token %}
-    {% for field in form %}
+    {% for field in registration_form %}
         <p>
             {{field.label_tag}}
             {{field}}
