@@ -10,6 +10,8 @@ choices = (
     )
 
 
+
+
 class Profile(models.Model):
     #image = models.ImageField(upload_to ="img/" , null=True)
     name=models.CharField(max_length=255, null=True)
@@ -18,7 +20,7 @@ class Profile(models.Model):
     user_type = models.CharField( max_length=255, choices=choices , null=True)
     registration_date = models.DateTimeField(auto_now_add=True)
     contact_number = models.CharField(max_length=12)
-    activated = models.BooleanField(default=False) #Day 
+    is_email_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
