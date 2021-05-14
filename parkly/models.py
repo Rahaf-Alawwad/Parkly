@@ -63,4 +63,9 @@ class Reservation(models.Model):
     def __str__(self):
         return self.code
 
+class SiteRequests(models.Model):
+    name = models.CharField(max_length=255)
+    website=models.CharField(max_length=255)
+    def __str__(self):
+        return self.code
 

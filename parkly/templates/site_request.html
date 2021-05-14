@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Request a new site </h1>
+<form action="" method="POST">
+{% csrf_token %}
+<label>
+Name
+<input type="text" place_holder="Add place name">
+</label>
+<label>
+Website
+<input type="text" place_holder="Add website link">
+</label>
+<input type="submit">
+</form>
+{% endblock %}

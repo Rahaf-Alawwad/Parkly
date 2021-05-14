@@ -8,5 +8,6 @@ urlpatterns = [
     path('reserve/' , views.reserveParking , name= "reserveParking" ),
     path('profile/<pk>' , views.profile , name= "profile" ),
     path('search/' , views.search , name= "search" ),
+    path('requestSite/' , views.requestSite , name= "requestSite" ),
     
 ]

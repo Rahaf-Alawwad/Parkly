@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from datetime import datetime
-from .models import Reservation, Parking,Lot,Profile
+from .models import *
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .filters import LotFilter
+from .forms import RequestForm
 # Create your views here.
 
 def home(request):
@@ -45,15 +46,29 @@ def reserveParking(request):
 
 @login_required()
 def search(request):
+    search =request.POST.get("search")
     lotsFilter=[]
     lots=Lot.objects.all()
     filter= LotFilter(request.GET, queryset=lots)
     if (request.method == "POST"): 
-        lotSearch = Lot.objects.filter(Q(name__icontains=request.POST.get("search")) | Q(location__icontains=request.POST.get("search")))
+        lotSearch = Lot.objects.filter(Q(name__icontains=search) | Q(location__icontains=search))
         for lot in lotSearch:
             lotsFilter.append(lot)
     else:
         lotsFilter=filter.qs
-    context={"filter":filter,"lotsFilter":lotsFilter}
+    length =(len(lotsFilter))
+    context={"filter":filter,"lotsFilter":lotsFilter, "search":search, "length":length}
     return render (request, 'search.html',context)
+
+@login_required()
+def requestSite(request):
+    if (request.method == "POST"): 
+        form =RequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return render (request, 'thanks.html')
+    else:
+        return render (request, 'site_request.html')
+
+
 
