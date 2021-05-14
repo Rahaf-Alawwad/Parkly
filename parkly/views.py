@@ -1,22 +1,29 @@
 from django.shortcuts import render
 from datetime import datetime
-from .models import Reservation, Parking,Lot
+from .models import Reservation, Parking,Lot,Profile
+from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def home(request):
     return render(request,'home.html' , {}) 
 
-def profile(request):
-    return render(request,'profile2.html' , {})     
+@login_required()
+def profile(request, pk):
+    user_object=User.objects.get(pk=pk)
+    print(user_object)
+    profile=Profile.objects.get(user=user_object)
+    return render(request,'profile.html' , {"profile":profile})     
 
 
+@login_required()
 def registerParking(request):
  
     return render(request,'register_lot.html' , {}) 
 
 
-
+@login_required()
 def reserveParking(request):
     ##Begin##
     #print("request Post: ",request.POST)
