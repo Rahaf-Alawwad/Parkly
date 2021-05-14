@@ -9,7 +9,7 @@ choices = (
     ('user' , 'user')
     )
 
-
+##
 
 
 class Profile(models.Model):
