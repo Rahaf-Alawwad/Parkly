@@ -45,10 +45,13 @@ def reserveParking(request):
 
 @login_required()
 def search(request):
+    lotsFilter=[]
     lots=Lot.objects.all()
     filter= LotFilter(request.GET, queryset=lots)
     if (request.method == "POST"): 
-        lotsFilter=[Lot.objects.get(name=request.POST.get("search"))]
+        lotSearch = Lot.objects.filter(Q(name__icontains=request.POST.get("search")) | Q(location__icontains=request.POST.get("search")))
+        for lot in lotSearch:
+            lotsFilter.append(lot)
     else:
         lotsFilter=filter.qs
     context={"filter":filter,"lotsFilter":lotsFilter}
