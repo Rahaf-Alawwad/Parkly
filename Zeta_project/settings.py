@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'parkly',
     'carts',
-    'user'
+    'user',
 ]
 
 MIDDLEWARE = [
