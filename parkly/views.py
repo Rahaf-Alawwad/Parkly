@@ -1,9 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
-from .models import Reservation, Parking,Lot,Profile
-from django.contrib.auth.models import User
+from .models import *
+from user.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from .filters import LotFilter
+from .forms import RequestForm
+from django.http import HttpResponse
+import json
+
 # Create your views here.
 
 def home(request):
@@ -11,9 +16,7 @@ def home(request):
 
 @login_required()
 def profile(request, pk):
-    user_object=User.objects.get(pk=pk)
-    print(user_object)
-    profile=Profile.objects.get(user=user_object)
+    profile=User.objects.get_object_or_404(pk=pk)
     return render(request,'profile.html' , {"profile":profile})     
 
 
@@ -41,3 +44,35 @@ def reserveParking(request):
         return render(request,'reserve.html' , {"available_parkings":available_parkings, "lot_parkings":lot_parkings}) 
     else:
         return render(request,'reserve.html' , {"available_parkings":[], "lot_parkings":[]})
+
+@login_required()
+def search(request):
+    search =request.POST.get("search")
+    lotsFilter=[]
+    lots=Lot.objects.all()
+    filter= LotFilter(request.GET, queryset=lots)
+    if (request.method == "POST"): 
+        lotSearch = Lot.objects.filter(Q(name__icontains=search) | Q(location__icontains=search))
+        for lot in lotSearch:
+            lotsFilter.append(lot)
+    else:
+        lotsFilter=filter.qs
+    length =(len(lotsFilter))
+    context={"filter":filter,"lotsFilter":lotsFilter, "search":search, "length":length}
+    return render (request, 'search.html',context)
+
+@login_required()
+def requestSite(request):
+   
+    if (request.method == "POST"):
+        site = RequestForm(request.POST or None)
+        if (site.is_valid()):
+            site.save()
+            return render (request, 'thanks.html')
+        else:
+            print(site.errors)
+    else:
+        return render (request, 'site_request.html')
+
+
+
