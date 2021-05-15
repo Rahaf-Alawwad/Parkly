@@ -15,9 +15,15 @@ def home(request):
     return render(request,'home.html' , {}) 
 
 @login_required()
-def profile(request, pk):
-    profile=User.objects.get_object_or_404(pk=pk)
-    return render(request,'profile.html' , {"profile":profile})     
+def profile(request):
+ 
+    context = {}
+    user = request.user
+   
+    if user.is_authenticated:
+        context['profile'] = get_object_or_404(User, username=user)
+        return render(request, 'profile.html', context)
+    return redirect('login')     
 
 
 @login_required()
