@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Request a new site </h1>
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+    {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+    <b>{{ field }}</b>: {{ error }}
+    {% endfor %}
+    {% endfor %}
+</div>
+{% endif %}
+<form action="" method="POST">
+{% csrf_token %}
+<label>
+Name
+<input name="name" type="text" place_holder="Add place name">
+</label>
+<label>
+Website
+<input name="website" type="text" place_holder="Add website link">
+</label>
+<input type="submit">
+</form>
+
+{% endblock %}

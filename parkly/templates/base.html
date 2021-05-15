@@ -42,7 +42,7 @@
 
 
     <nav class="navbar navbar-expand-sm navbar-light"
-        style="padding: 0.3% 2%;border-bottom:4px solid #7FD8BE;font-size: 2.5vh;background-color: #0f0c1d;">
+        style="padding: 0.3% 2%;border-bottom:4px solid #eea71b;font-size: 2.5vh;background-color: #1f193a;">
         <a class="navbar-brand " href="/home"> <img id="logo" src="{% static 'uploads/logo2_auto_x2.png' %}" alt="logo"
                 width="100vh"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -65,7 +65,8 @@
 
             <div class="topnav">
                 <div class="search-container">
-                    <form action="/action_page.php">
+                    <form method="POST" action="{% url 'search' %}">
+                        {% csrf_token %}
                         <input style="font-size:2.3vh" type="text" placeholder="Search venues" name="search">
                         <button class="btn btn-outline-light m-2" type="submit" style="height:4vh"><i
                                 class="fa fa-search"></i></button>
@@ -77,12 +78,12 @@
                 {% if not user.is_authenticated %}
                 <a href="{% url 'login' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     login</a>
-                <a href="{% url 'register' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
+                <a href="{% url 'signup' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     register</a>
 
                 {%else%}
                 <h6 style="color:white;display:inline-block; padding:0 6px" class="card-subtitle">Welcome, {{user}}</h6>
-                <a href="{% url 'profile' pk=user.id%}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
+                <a href="{% url 'profile' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     Profile</a>
                 <a href="{% url 'logout' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     Logout</a>
