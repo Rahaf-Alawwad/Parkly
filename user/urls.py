@@ -8,14 +8,7 @@ urlpatterns = [
     path('logout/' , views.logout_view , name= "logout"), 
     path('signup/' , views.signup_view ,name="signup"), 
     path('resetPassword/',as_view.PasswordResetView.as_view(template_name="reset_password.html"), name="password_reset"),
-<<<<<<< HEAD
-    path('resetPasswordSent/',as_view.PasswordChangeDoneView.as_view(), name="password_reset_done"),
-    path('password/reset/confirm/<uidb64>/<token>/', as_view.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('resetPasswordComplete/',as_view.PasswordResetCompleteView.as_view(),name="password_reset_complete"),
-=======
     path('resetPasswordSent/',as_view.PasswordChangeDoneView.as_view(template_name="reset_password.html"), name="password_reset_done"),
     path('password/reset/confirm/<uidb64>/<token>/', as_view.PasswordResetConfirmView.as_view(template_name="reset_password.html"), name='password_reset_confirm'),
     path('resetPasswordComplete/',as_view.PasswordResetCompleteView.as_view(template_name="reset_password.html"),name="password_reset_complete"),
- 
->>>>>>> 0496177cebceca8e2f6d2f86d750c4f83800a38e
 ]

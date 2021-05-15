@@ -40,13 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'parkly',
-<<<<<<< HEAD
     'carts',
     'user',
-=======
-    'user',
     'django_filters'
->>>>>>> 0496177cebceca8e2f6d2f86d750c4f83800a38e
 ]
 
 MIDDLEWARE = [
