@@ -1,7 +1,7 @@
-from django import forms
+from django.forms import ModelForm
 from .models import SiteRequests
 
-class RequestForm(forms.ModelForm):
+class RequestForm(ModelForm):
 
     class Meta:
         model = SiteRequests

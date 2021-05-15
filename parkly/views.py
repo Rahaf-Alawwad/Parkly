@@ -1,11 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from datetime import datetime
 from .models import *
-from django.contrib.auth.models import User
+from user.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .filters import LotFilter
 from .forms import RequestForm
+from django.http import HttpResponse
+import json
+
 # Create your views here.
 
 def home(request):
@@ -13,9 +16,7 @@ def home(request):
 
 @login_required()
 def profile(request, pk):
-    user_object=User.objects.get(pk=pk)
-    print(user_object)
-    profile=Profile.objects.get(user=user_object)
+    profile=User.objects.get_object_or_404(pk=pk)
     return render(request,'profile.html' , {"profile":profile})     
 
 
@@ -62,11 +63,14 @@ def search(request):
 
 @login_required()
 def requestSite(request):
-    if (request.method == "POST"): 
-        form =RequestForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return render (request, 'thanks.html')
+   
+    if (request.method == "POST"):
+        site = RequestForm(request.POST or None)
+        if (site.is_valid()):
+            site.save()
+            return render (request, 'thanks.html')
+        else:
+            print(site.errors)
     else:
         return render (request, 'site_request.html')
 

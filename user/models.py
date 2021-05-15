@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name,img,user_type="1",password=None):
+    def create_user(self, email, username, first_name, last_name,img="",user_type="1",password=None):
         if not email:
             raise ValueError('Users must have an email address')
         if not username:
@@ -15,8 +15,6 @@ class UserManager(BaseUserManager):
             raise ValueError('Users must have a first name')
         if not last_name:
             raise ValueError('Users must have a last name')
-        if not img:
-            raise ValueError('Users must have a profile image')
 
         user = self.model(
             username=username,
@@ -31,7 +29,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password,first_name, last_name,img,user_type="0"):
+    def create_superuser(self, email, username, password,first_name, last_name,img="#",user_type="0"):
         user = self.create_user(
             username=username,
             email=email,
@@ -44,6 +42,7 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
+        user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -62,10 +61,12 @@ class User(AbstractBaseUser):
     is_active       = models.BooleanField(default=True)
     is_staff        = models.BooleanField(default=False)
     is_superuser    = models.BooleanField(default=False)
+    location        = models.CharField(max_length=255, null=True)
+    contact_number  = models.CharField(max_length=12, null=True)
 
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = [ 'email','first_name','last_name','img']
+    REQUIRED_FIELDS = [ 'email','first_name','last_name']
 
     objects = UserManager()
 
