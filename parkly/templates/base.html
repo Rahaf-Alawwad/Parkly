@@ -83,7 +83,7 @@
 
                 {%else%}
                 <h6 style="color:white;display:inline-block; padding:0 6px" class="card-subtitle">Welcome, {{user}}</h6>
-                <a href="{% url 'profile' pk=user.id%}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
+                <a href="{% url 'profile' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     Profile</a>
                 <a href="{% url 'logout' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     Logout</a>

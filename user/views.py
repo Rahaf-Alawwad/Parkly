@@ -1,24 +1,3 @@
-# from django.shortcuts import redirect, render
-# from .forms import UserForm
-# from Zeta_project.settings import EMAIL_HOST_USER
-# from django.core.mail import send_mail
-# # Create your views here.
-
-# def register(request):
-#     form = UserForm()
-#     if(request.method == "POST"):
-#         user =  UserForm(request.POST)
-#         subject = 'Welcome to Parkly'
-#         message = 'Welcome, '+str(user['first_name'].value())
-#         recepient = str(user['email'].value())
-#         send_mail(subject, 
-#             message, EMAIL_HOST_USER, [recepient], fail_silently = False)
-#         if (user.is_valid()):
-#             user.save()
-#             return redirect('/')
-#         else:
-#             print(user.errors)
-#     return render(request, "register.html", {"form":form})
 from django.shortcuts import render
 
 # Create your views here.
@@ -53,6 +32,7 @@ def login_view(request):
 
     context = {}
     user =request.user
+  
     if user.is_authenticated:
         return redirect('home')
     
@@ -61,10 +41,11 @@ def login_view(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate( username='admin', password="admin" )
+            user = authenticate( username=username, password=password )
 
             if user:
                 login(request, user)
+                
                 return redirect('home')
 
     else:
@@ -73,13 +54,7 @@ def login_view(request):
     context['login_form'] = form
     return render(request, 'login.html', context)
 
-def profile_view(request):
-    context = {}
-    user = request.user
-    if user.is_authenticated:
-        context['profile'] = get_object_or_404(User, username=user)
-        return render(request, 'profile.html', context)
-    return redirect('login')
+
 
 def logout_view(request):
     logout(request)

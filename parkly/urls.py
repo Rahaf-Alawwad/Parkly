@@ -6,7 +6,7 @@ urlpatterns = [
     path('' , views.home , name= "home" ),
     path('lot/register' , views.registerParking , name= "registerParking" ),
     path('reserve/' , views.reserveParking , name= "reserveParking" ),
-    path('profile/<pk>' , user_views.User , name= "profile" ),
+    path('profile' , views.profile , name= "profile" ),
     path('search/' , views.search , name= "search" ),
     path('requestSite/' , views.requestSite , name= "requestSite" ),
     
