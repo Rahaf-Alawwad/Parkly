@@ -5,7 +5,7 @@ from user.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .filters import LotFilter
-from .forms import RequestForm
+from .forms import RequestForm,RegisterBusinessForm
 from django.http import HttpResponse
 import json
 
@@ -27,29 +27,70 @@ def profile(request):
 
 
 @login_required()
-def registerParking(request):
+def addLot(request):
  
-    return render(request,'register_lot.html' , {}) 
+    return render(request,'add_lot.html' , {}) 
+
+@login_required()
+def registerLot(request):
+
+    if (request.method == "POST"):
+        lot = RegisterBusinessForm(request.POST or None)
+        if (lot.is_valid()):
+            lot.save()
+            return render (request, 'thanks.html')
+        else:
+            print(lot.errors)
+    else:
+        return render (request, 'owner/register_business.html')
+
+ 
+    
+
+
+@login_required
+def parkings(request):
+   
+    lot = Lot.objects.get(pk=request.POST.get("pk"))
+    return render(request,'reserve.html' , {"prices":"-","lot":lot,"date":"","timeFrom":"","timeTo":"","zipped":[]})
 
 
 @login_required()
-def reserveParking(request):
+def showParking(request):
+    
     ##Begin##
     #print("request Post: ",request.POST)
     if (request.method == "POST"): 
         available_parkings =[]
-        lot = Lot.objects.get(name="King Saud University")
-        lot_parkings = Parking.objects.filter(lot=lot) 
-        for parking in lot_parkings:
-            if Reservation.objects.filter(Q(parking=parking, date=request.POST.get("date"),timeFrom__gte= request.POST.get("timeFrom"),timeTo__lte=request.POST.get("timeTo"))).exists(): 
+        lot_parkings=[]
+        prices=[]
+        date=request.POST.get("date")
+        timeFrom=request.POST.get("timeFrom")
+        timeTo=request.POST.get("timeTo")
+        lot = Lot.objects.get(pk=request.POST.get("lot"))
+        print(lot)
+        parkings = Parking.objects.filter(lot=lot) 
+        for i ,parking in enumerate(parkings):
+            if Reservation.objects.filter(Q(parking=parking, date=date,timeFrom__gte=timeFrom ,timeTo__lte=timeTo)).exists(): 
                 available_parkings.append(1)
+                
             else:
                 available_parkings.append(0)
+                prices.append(parkings[i].price)
+            lot_parkings.append(parkings[i].park_ID)
         ##End##
-        print("available_parkings: ",available_parkings)
-        return render(request,'reserve.html' , {"available_parkings":available_parkings, "lot_parkings":lot_parkings}) 
+        zipped = zip(available_parkings,lot_parkings)
+        return render(request,'reserve.html' , {"prices":prices,"lot":lot,"date":date,"timeFrom":timeFrom,"timeTo":timeTo,"zipped":zipped}) 
     else:
-        return render(request,'reserve.html' , {"available_parkings":[], "lot_parkings":[]})
+        return render(request,'reserve.html' , {"prices":"-","lot":"","date":"","timeFrom":"","timeTo":"","zipped":[]})
+
+
+def reserveParking(request):
+    lot = Lot.objects.get(pk=request.POST.get("lot"))
+    parking = Parking.objects.get(lot=lot, park_ID=request.POST.get("checked-parking"))
+    data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code="10341")
+    data.save()
+    return render(request,'thanks.html' , {})
 
 @login_required()
 def search(request):
