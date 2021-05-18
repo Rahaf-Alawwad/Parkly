@@ -14,6 +14,21 @@ from geopy.distance import geodesic
 from .utils import get_geo, get_coordinates,get_zoom
 import folium
 # Create your views here.
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+
+
+def index(request):
+    context = {}
+    if request.method == "POST":
+        factory = qrcode.image.svg.SvgImage
+        img = qrcode.make(request.POST.get("qr_text",""), image_factory=factory, box_size=20)
+        stream = BytesIO()
+        img.save(stream)
+        context["svg"] = stream.getvalue().decode()
+
+    return render(request, "qr.html", context=context)
 
 def home(request):
     return render(request,'home.html' , {}) 
@@ -83,14 +98,16 @@ def addLot(request):
 
 @login_required()
 def registerLot(request):
+   
     form = RegisterBusinessForm(request.POST or None)
     context={
         "form":form
     }
     if (request.method == "POST"):
-        
+        owner = Lot.objects.get(pk=request.user.id)
         if (form.is_valid()):
-            form.save()
+            lot= Lot(form,  owner = owner )
+            lot.save()
             return render (request, 'thanks.html')
         else:
             print(form.errors)
@@ -98,7 +115,6 @@ def registerLot(request):
         return render (request, 'owner/register_business.html',context)
 
  
-    
 
 
 @login_required

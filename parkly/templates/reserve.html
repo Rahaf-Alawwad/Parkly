@@ -663,200 +663,209 @@
     .img-reserve {
         display: inline-block;
         width: 100%;
-        height: 100px;
-        background-image: url("https://image.freepik.com/free-vector/reserve-parking-space-curbside-pickup-abstract-concept-illustration-customer-walk-pickup-station-customers-arrival-keep-employees-safe-small-business_335657-3337.jpg");
-        background-repeat: no-repeat
+        height: 300px;
+        z-index: 100;
+        position: absolute;
+        left:0px;
     }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
+<div style="display:flex; flex-direction:row;">
+    <div class="card" style="box-shadow:none;background-color:transparent; width: 190rem;">
 
-<div class="img-reserve"></div>
-<div class="card" style="box-shadow:none;background-color:transparent; width: 190rem;">
-    
-    <div class="card-body">
-        
-        <div style="margin-top:20px;" class="lot">
-            <div class="parking_lot">
-
-            </div>
-            <div>
-                <input id="available_parkings" hidden="hidden" value={{available_parkings}} />
+        <div class="card-body">
+            <div class="img-reserve"><img src="https://image.freepik.com/free-vector/reserve-parking-space-curbside-pickup-abstract-concept-illustration-customer-walk-pickup-station-customers-arrival-keep-employees-safe-small-business_335657-3337.jpg" alt="">  </div>
 
 
+            <div style="margin-top:20px;" class="lot">
+                <div class="parking_lot">
 
-                <form method="POST">
-                    {% csrf_token %}
+                </div>
+                <div>
+                    <input id="available_parkings" hidden="hidden" value={{available_parkings}} />
 
-                    <h1 class="card-title" style="font-size:6vh;color:#168edf">{{lot.name}} <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i></a></h1>
-                    <div class="card-subtitle mb-2 text-muted">
-                        <h4 style="display:inline-block;margin-right:20px"><i class="fas fa-dollar-sign    "> =
-                                {{prices.0}}</i></h4>
-                        <input hidden="hidden" name="price" value={{prices.0}}>
-                        <h4 style="display:inline-block; font-weight:600">Re-entery allowed? = </h4>
-                        <h4 style="display:inline-block;margin-right:20px">{{reentery}}</h4>
-                        
-                    </div>
-                    <hr>
-                    <input class="input" style="display:inline-block" hidden="hidden" name="price" value={{prices.0}}>
-                    <input hidden="hidden" value="{{lot.id}}" name="lot">
-                    <section>
-                        <div style="float:left;margin-right:20px;">
-                            <label style="display: block;" for="timeFrom">From</label>
-                            <input class="input" type="time" step="3600" value="{{timeFrom}}" id="timeFrom"
-                                name="timeFrom" min="6:00" max="21:00"> <span style="margin-right:20px"
-                                class="validity"></span>
+
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <h1 class="card-title" style="font-size:6vh;color:#168edf">{{lot.name}} <a href="#"><i
+                                    class="fa fa-map-marker" aria-hidden="true"></i></a></h1>
+                        <div class="card-subtitle mb-2 text-muted">
+                            <h4 style="display:inline-block;margin-right:20px"><i class="fas fa-dollar-sign    "> =
+                                    {{prices.0}}</i></h4>
+                            <input hidden="hidden" name="price" value={{prices.0}}>
+                            <h4 style="display:inline-block; font-weight:600">Re-entery allowed? = </h4>
+                            <h4 style="display:inline-block;margin-right:20px">{{reentery}}</h4>
+
                         </div>
-                    </section>
-                    <section>
-                        <div style="float:left;margin-right:20px;">
-                            <label style="display: block;" for="timeFrom">To</label>
-                            <input class="input" type="time" step="3600" value="{{timeTo}}" id="timeTo" name="timeTo"
-                                min="6:00" max="21:00"> <span style="margin-right:20px" class="validity"></span>
-                        </div>
-                    </section>
-                    <section>
-                        <div style="float:left;margin-right:20px;">
-                            <label style="display: block;" for="timeFrom">Date</label>
-                            <input class="input" style="margin-right:20px" name="date" id="date" value="{{date}}"
-                                type="date">
-                        </div>
-                    </section>
+                        <hr>
+                        <input class="input" style="display:inline-block" hidden="hidden" name="price"
+                            value={{prices.0}}>
+                        <input hidden="hidden" value="{{lot.id}}" name="lot">
+                        <section>
+                            <div style="float:left;margin-right:20px;">
+                                <label style="display: block;" for="timeFrom">From</label>
+                                <input class="input" type="time" step="3600" value="{{timeFrom}}" id="timeFrom"
+                                    name="timeFrom" min="6:00" max="21:00"> <span style="margin-right:20px"
+                                    class="validity"></span>
+                            </div>
+                        </section>
+                        <section>
+                            <div style="float:left;margin-right:20px;">
+                                <label style="display: block;" for="timeFrom">To</label>
+                                <input class="input" type="time" step="3600" value="{{timeTo}}" id="timeTo"
+                                    name="timeTo" min="6:00" max="21:00"> <span style="margin-right:20px"
+                                    class="validity"></span>
+                            </div>
+                        </section>
+                        <section>
+                            <div style="float:left;margin-right:20px;">
+                                <label style="display: block;" for="timeFrom">Date</label>
+                                <input class="input" style="margin-right:20px" name="date" id="date" value="{{date}}"
+                                    type="date">
+                            </div>
+                        </section>
 
 
-            </div>
-            <button style="width:100%;margin-top:17px;" id="available-parking-btn"
-                onclick="this.form.action='available'" type="submit" class="btn btn-outline-success">
-                Show Available Parkings
-            </button>
+                </div>
+                <button style="width:100%;margin-top:17px;" id="available-parking-btn"
+                    onclick="this.form.action='available'" type="submit" class="btn btn-outline-success">
+                    Show Available Parkings
+                </button>
 
-            <input hidden="hidden" type="text" name="checked-parking" id="checked-parking" /><br /><br /><br /><br />
+                <input hidden="hidden" type="text" name="checked-parking"
+                    id="checked-parking" /><br /><br /><br /><br />
 
 
 
 
-            <ol class="lot-area fuselage">
-                <div class="entery entery--back "></div>
-                <li class="row row--1">
+                <ol class="lot-area fuselage">
+                    <div class="entery entery--back "></div>
+                    <li class="row row--1">
 
-                    <ol style="text-align: center;list-style-position: inside;" class="parkings-line" type="A">
-                        {% if not zipped %}
-                        <h1>No available parkings</h1>
-                        {% endif %}
-                        {% for parking_status, parking_name in zipped%}
-                        <li class="parking">
-                            {% if parking_status == 1 %}
-                            <input type="checkbox" disabled id="{{parking_name}}" />
-                            {% else %}
-                            <input class="all-parkings" onclick="$('#checked-parking').val($(this).attr('id'));"
-                                type="checkbox" id="{{parking_name}}" />
+                        <ol style="text-align: center;list-style-position: inside;" class="parkings-line" type="A">
+                            {% if not zipped %}
+                            <h1>No available parkings</h1>
                             {% endif %}
-                            <label for="{{parking_name}}">{{parking_name}}</label>
+                            {% for parking_status, parking_name in zipped%}
+                            <li class="parking">
+                                {% if parking_status == 1 %}
+                                <input type="checkbox" disabled id="{{parking_name}}" />
+                                {% else %}
+                                <input class="all-parkings" onclick="$('#checked-parking').val($(this).attr('id'));"
+                                    type="checkbox" id="{{parking_name}}" />
+                                {% endif %}
+                                <label for="{{parking_name}}">{{parking_name}}</label>
 
-                        </li>
-                        {% endfor %}
-                    </ol>
-                </li>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                    </li>
 
-                <div class="exit exit--back ">
+                    <div class="exit exit--back ">
 
-            </ol><br /><br />
+                </ol><br /><br />
 
-            <button style="width:100%" onclick="this.form.action='reserve/'" type="submit"
-                class="btn btn-outline-success">
-                Reserve Parking
-            </button>
-            </form>
-            <br /><br />
-            <script>
+                <button style="width:100%" onclick="this.form.action='reserve/'" type="submit"
+                    class="btn btn-outline-success">
+                    Reserve Parking
+                </button>
+                </form>
+                <br /><br />
+                <script>
 
-                $('.all-parkings').on('change', function () {
-                    $('.all-parkings').not(this).prop('checked', false)
-                })
+                    $('.all-parkings').on('change', function () {
+                        $('.all-parkings').not(this).prop('checked', false)
+                    })
 
-            </script>
-            </script>
-            <script>
-                function htmlEncode(value) {
-                    return $('<div/>').text(value).html();
-                }
+                </script>
+                </script>
+                <script>
+                    function htmlEncode(value) {
+                        return $('<div/>').text(value).html();
+                    }
 
-                $(function () {
-                    $("#generate").click(function () {
-                        $(".qr-code").attr("src", "https://chart.googleapis.com/chart?cht=qr&chl=" + htmlEncode({{ user.id }} + (Math.floor(Math.random() * 1000))) + "&chs=160x160&chld=L|0");
+                    $(function () {
+                        $("#generate").click(function () {
+                            $(".qr-code").attr("src", "https://chart.googleapis.com/chart?cht=qr&chl=" + htmlEncode({{ user.id }} + (Math.floor(Math.random() * 1000))) + "&chs=160x160&chld=L|0");
             });
         });
-            </script>
-            <div class="container-fluid">
-                <div class="text-center">
-                    <img hidden="hidden"
-                        src="https://chart.googleapis.com/chart?cht=qr&chl=Hello+World&chs=160x160&chld=L|0"
-                        class="qr-code img-thumbnail img-responsive">
-                </div>
+                </script>
+                <div class="container-fluid">
+                    <div class="text-center">
+                        <img hidden="hidden"
+                            src="https://chart.googleapis.com/chart?cht=qr&chl=Hello+World&chs=160x160&chld=L|0"
+                            class="qr-code img-thumbnail img-responsive">
+                    </div>
 
 
 
 
 
 
-                <div class="container">
-                    <div class="left-side">
-                        <div class="card">
-                            <div class="card-line"></div>
-                            <div class="buttons"></div>
-                        </div>
-                        <div class="post">
-                            <div class="post-line"></div>
-                            <div class="screen">
-                                <div class="dollar">$</div>
+                    <div class="container">
+                        <div class="left-side">
+                            <div class="card">
+                                <div class="card-line"></div>
+                                <div class="buttons"></div>
                             </div>
-                            <div class="numbers"></div>
-                            <div class="numbers-line2"></div>
-                        </div>
-                    </div>
-                    <div class="right-side">
-                        <div class="new">Pay by card</div>
-
-                        <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
-                            viewBox="0 0 451.846 451.847">
-                            <path
-                                d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"
-                                data-original="#000000" class="active-path" data-old_color="#000000" fill="#cfcfcf" />
-                        </svg>
-
-                    </div>
-                </div>
-                <br>
-
-                <div class="container">
-                    <div class="left-side">
-                        <div><span class="icon-cash"></span>
-
-                        </div>
-                        <div class="post">
-                            <div class="post-line"></div>
-                            <div class="screen">
-                                <div class="dollar">$</div>
+                            <div class="post">
+                                <div class="post-line"></div>
+                                <div class="screen">
+                                    <div class="dollar">$</div>
+                                </div>
+                                <div class="numbers"></div>
+                                <div class="numbers-line2"></div>
                             </div>
-                            <div class="numbers"></div>
-                            <div class="numbers-line2"></div>
+                        </div>
+                        <div class="right-side">
+                            <div class="new">Pay by card</div>
+
+                            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
+                                viewBox="0 0 451.846 451.847">
+                                <path
+                                    d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"
+                                    data-original="#000000" class="active-path" data-old_color="#000000"
+                                    fill="#cfcfcf" />
+                            </svg>
+
                         </div>
                     </div>
-                    <div class="right-side">
-                        <div class="new">Cash On Delivery</div>
+                    <br>
 
-                        <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
-                            viewBox="0 0 451.846 451.847">
-                            <path
-                                d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"
-                                data-original="#000000" class="active-path" data-old_color="#000000" fill="#cfcfcf" />
-                        </svg>
+                    <div class="container">
+                        <div class="left-side">
+                            <div><span class="icon-cash"></span>
 
+                            </div>
+                            <div class="post">
+                                <div class="post-line"></div>
+                                <div class="screen">
+                                    <div class="dollar">$</div>
+                                </div>
+                                <div class="numbers"></div>
+                                <div class="numbers-line2"></div>
+                            </div>
+                        </div>
+                        <div class="right-side">
+                            <div class="new">Cash On Delivery</div>
+
+                            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
+                                viewBox="0 0 451.846 451.847">
+                                <path
+                                    d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"
+                                    data-original="#000000" class="active-path" data-old_color="#000000"
+                                    fill="#cfcfcf" />
+                            </svg>
+
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
     </div>
     <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
