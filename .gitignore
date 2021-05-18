@@ -126,7 +126,8 @@ ENV/
 env.bak/
 venv.bak/
 pythonenv*
-
+Pipfile
+pipfile.lock
 # Spyder project settings
 .spyderproject
 .spyproject
