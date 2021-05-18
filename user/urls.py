@@ -1,4 +1,5 @@
-from django.urls import path 
+from django.urls import path
+from user import views 
 from django.contrib.auth import views as as_view
 from user import views 
 
