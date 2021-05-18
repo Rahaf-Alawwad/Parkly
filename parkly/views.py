@@ -79,6 +79,3 @@ def requestSite(request):
             print(site.errors)
     else:
         return render (request, 'site_request.html')
-
-
-

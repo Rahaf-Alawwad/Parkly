@@ -20,6 +20,6 @@ urlpatterns = [
     
     path('admin/', admin.site.urls),
     path('' , include('parkly.urls')),
-    path('cart/', include('carts.urls')),
     path('user/' , include('user.urls')),
+    path('', include('payments.urls')),
 ]
