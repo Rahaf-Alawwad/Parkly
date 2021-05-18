@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'parkly',
     'user',
-    'django_filters'
+    'django_filters',
+    'payments.apps.PaymentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+GEOIP_PATH=os.path.join(BASE_DIR,'geoip')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -144,3 +145,7 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 
 LOGOUT_REDIRECT_URL = "login"
+
+# Stripe Testing API for Payment
+STRIPE_SECRET_KEY = 'sk_test_51IrvjPJRtXQC3iPwTkm0fCf9tpc7Mb3oXlEa2zoymuaCL18b4NFd8vsBoodnfxU1LqLt5U1YCzf7Rxp7dNdDXNag00NxrKMWrj'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51IrvjPJRtXQC3iPwA5g9Y8dybrT69HdWtkgWtFwWLdEDWzJ3k43nqy8SWncIL67W0HJgTtQLsbLeLt5BNLI9AQoT00geQW4qrF'

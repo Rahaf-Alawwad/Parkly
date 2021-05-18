@@ -20,6 +20,7 @@
 <h2>REGISTER BUSINESS</h2>
 <form method="post">
     {% csrf_token %}
+    {{form}}
     {% for field in RegisterBusinessForm %}
         <p>
             {{field.label_tag}}
