@@ -5,10 +5,14 @@ from user.models import User
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .filters import LotFilter
-from .forms import RequestForm,RegisterBusinessForm
+from .forms import RequestForm,RegisterBusinessForm,mapForm
 from django.http import HttpResponse
 import json
 import random 
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+from .utils import get_geo, get_coordinates,get_zoom
+import folium
 # Create your views here.
 
 def home(request):
@@ -16,7 +20,50 @@ def home(request):
 
 
 def parkingMap(request):
-    return render(request,'map.html',{})
+    distance=0
+    minutes=0
+    mapData=get_object_or_404(Measurement,id=1)
+    form = mapForm(request.POST or None)
+    geolocate = Nominatim(user_agent='measurements')
+    ip="72.14.207.99"
+    country, city, lat,long= get_geo(ip)
+    location=geolocate.geocode(city)
+    print(location)
+    locationLatitude = lat
+    locationLongitude= long
+    fromPoint=(locationLatitude,locationLongitude)
+    mapImage= folium.Map(width=500, height=500, location=get_coordinates(locationLatitude,locationLongitude))
+    folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red")).add_to(mapImage)
+    if form.is_valid():
+        instance =form.save(commit=False)
+        destination_ = form.cleaned_data.get('destination')
+        destination = geolocate.geocode(destination_)
+
+        destinationLatitude=destination.latitude
+        destinationLongitude=destination.longitude
+        toPoint=(destinationLatitude,destinationLongitude)
+        distance= round(geodesic(fromPoint,toPoint).km, 2)
+        mapImage= folium.Map(width=500, height=500, location=get_coordinates(locationLatitude,locationLongitude,destinationLatitude,destinationLongitude), zoom_start=get_zoom(distance))
+        folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red")).add_to(mapImage)
+        folium.Marker([destinationLatitude,destinationLongitude], tooltip='Click here for more', popup=destination, icon=folium.Icon(color="blue", icon="cloud")).add_to(mapImage)
+
+        connector_line= folium.PolyLine(locations=[fromPoint,toPoint], weight=2, color='black')
+        mapImage.add_child(connector_line)
+        instance.location = location
+        instance.distance = distance
+        instance.save()
+    mapImage = mapImage._repr_html_()   
+    minutes = round(distance/0.6)
+    context ={
+        'distance': distance,
+        'minutes':minutes,
+        'form':form,
+        'mapImage':mapImage
+    }
+
+    return render(request,'map.html',context)
+
+
 @login_required()
 def profile(request):
  
@@ -36,16 +83,19 @@ def addLot(request):
 
 @login_required()
 def registerLot(request):
-
+    form = RegisterBusinessForm(request.POST or None)
+    context={
+        "form":form
+    }
     if (request.method == "POST"):
-        lot = RegisterBusinessForm(request.POST or None)
-        if (lot.is_valid()):
-            lot.save()
+        
+        if (form.is_valid()):
+            form.save()
             return render (request, 'thanks.html')
         else:
-            print(lot.errors)
+            print(form.errors)
     else:
-        return render (request, 'owner/register_business.html')
+        return render (request, 'owner/register_business.html',context)
 
  
     
@@ -89,7 +139,7 @@ def showParking(request):
     else:
         return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":"","date":"","timeFrom":"","timeTo":"","zipped":[]})
 
-
+@login_required()
 def reserveParking(request):
     lot = Lot.objects.get(pk=request.POST.get("lot"))
     parking = Parking.objects.get(lot=lot, park_ID=request.POST.get("checked-parking"))
