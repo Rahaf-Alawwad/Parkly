@@ -664,7 +664,6 @@
         display: inline-block;
         width: 100%;
         height: 300px;
-        z-index: 100;
         position: absolute;
         left:0px;
     }
@@ -676,7 +675,7 @@
     <div class="card" style="box-shadow:none;background-color:transparent; width: 190rem;">
 
         <div class="card-body">
-            <div class="img-reserve"><img src="https://image.freepik.com/free-vector/reserve-parking-space-curbside-pickup-abstract-concept-illustration-customer-walk-pickup-station-customers-arrival-keep-employees-safe-small-business_335657-3337.jpg" alt="">  </div>
+            <div hidden="hidden" class="img-reserve"><img src="https://image.freepik.com/free-vector/reserve-parking-space-curbside-pickup-abstract-concept-illustration-customer-walk-pickup-station-customers-arrival-keep-employees-safe-small-business_335657-3337.jpg" alt="">  </div>
 
 
             <div style="margin-top:20px;" class="lot">
@@ -773,10 +772,31 @@
                     class="btn btn-outline-success">
                     Reserve Parking
                 </button>
+                <button class="payment">
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="pk_test_51IrvjPJRtXQC3iPwA5g9Y8dybrT69HdWtkgWtFwWLdEDWzJ3k43nqy8SWncIL67W0HJgTtQLsbLeLt5BNLI9AQoT00geQW4qrF"
+                    data-description="A Parkly Charge"
+                    data-amount="5000"
+                    data-locale="auto">
+                    receipt_email='fhd684@gmail.com'
+                    </script>
+                    </button>
                 </form>
                 <br /><br />
-                <script>
 
+
+
+            
+           
+
+               
+
+
+                <script>
+                    $(".payment").click( function(){
+                        console.log("HEEEEEEEEERRRRRRRRREEEEEEEEEEEE")
+                        this.form.action='charge/'
+                    })
                     $('.all-parkings').on('change', function () {
                         $('.all-parkings').not(this).prop('checked', false)
                     })
