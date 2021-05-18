@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+    function createCanvas() {
+        var available_parking = document.getElementById("available_parking").value;
+        if (available_parking <= 20) {
+
+            var windWidth = screen.width;
+            var windHeight = screen.height;
+            //var body = document.querySelector("body");
+            var canvas = document.getElementById("lot-canvas");
+            canvas.width = windWidth;
+            canvas.height = windHeight;
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            $('#park-div').empty();
+            ctx = canvas.getContext("2d");
+            var emptyParking =new Image()
+           
+            emptyParking.src = "{%static 'uploads/parking.jpg' %}"
+            emptyParking.onload = function () {
+                var width, height
+                if (windWidth < windHeight) {
+                    width = windWidth / 4
+                    height = windHeight / (available_parking)
+                    startPointTop = 100
+                    startPointLeft = 10
+                }
+                else {
+                    width = 140;
+                    height = 180;
+                    startPointTop = 5
+                    startPointLeft = 35
+                }
+
+                var counter = 0
+                var offsetY = 0;
+
+                for (var i = 0; i < parseInt(available_parking); i++) {
+
+                    if (counter >= 4) {
+                        offsetY += height
+                        counter = 0;
+                    }
+                    ctx.beginPath();
+                    ctx.rect((counter * width), 5 + offsetY, width, height);
+
+                        $('#park-div').append($('<button/>', {
+                            text: 'Reserve',
+                            id: i + 1,
+                            css: { position: "absolute", top: (startPointTop + offsetY) + height, left: startPointLeft + (counter * width), backgroundColor: "green", color: "white", borderRadius: "50px" , border:"none", padding:"10px"}, 
+                            hover: (function () {
+                                $(this).css({"background-color":"yellow", "color":"black"});
+                            }),
+                            mouseleave:(function () {
+                                $(this).css({"background-color":"green", "color":"white"});
+                            })
+                        }));
+                        ctx.drawImage(emptyParking, (counter * width), 5 + offsetY, width, height);
+                    
+                    ctx.stroke();
+                    counter++
+
+                };
+
+            }
+        }
+        else {
+            console.log("exceeds parking limit: 20")
+        }
+    }
+</script>
+
+<input id="name" placeholder="Lot name" type="text">
+<input id="available_parking" placeholder="How many parkings?" onfocus="this.value=''" type="text">
+<label>Reentry allowed?</label>
+<input id="is_reentry_allowed" type="checkbox">
+<input id="price" placeholder="Price per hour" type="text">
+<button onclick="createCanvas()">
+    Create virtual lot
+</button>
+<div id="lot-div" style="z-index:1;">
+    <div id="park-div"></div>
+    <canvas id="lot-canvas" style="z-index: 1;">
+</div>
+</canvas>
+
+
+
+
+
+
+
+
+
+{% endblock %}

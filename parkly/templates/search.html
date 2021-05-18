@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Search Results for "{{search}}"</h1>
+<h3> {{ length}} parking lots </h3>
+
+{% if length >= 1%}
+<form method="GET">
+{% csrf_token %}
+{{filter.form}}
+<button type="submit">Filter</button>
+</form>
+
+
+{% for lots in lotsFilter%}
+
+<div class="card" style="width:400px; margin:20px; display:inline-block">
+    <img class="card-img-top"
+        src="{{lots.image}}" alt="Card image" height="250px">
+    <div class="card-body">
+    <form action="{% url 'parkings'%}" method="POST">
+    {% csrf_token %}
+        <h4  class="card-title">{{lots.name }}</h4>
+        <input name="pk" hidden="hidden" value={{lots.id}}>
+        <p class="card-text">{{lots.location }}</p>
+        <input type="submit" href="" class="btn btn-primary" value="Check out">
+        </form>
+    </div>
+</div>
+
+ {% endfor %}
+  {% else %}
+  
+  <img src="https://cdn.dribbble.com/users/1163441/screenshots/3064215/____.gif" width="300vh" alt="no result">
+   {% comment %} https://cdn.dribbble.com/users/605376/screenshots/3424589/tumbleweed.gif {% endcomment %}
+  <h5> What you searched for was not found or does not exist</h5>
+  <h5> Suggestions:</h5>
+  <ul>
+<li>Make sure you spelled the word correctly.</li>
+  <li>Try different terms</li>
+  <li>Try fewer terms</li>
+  </ul>
+
+  <h4> Could not find a place? request it <a href="{% url 'requestSite'%}">here</a> </h4>
+ {% endif %}
+
+{% endblock %}

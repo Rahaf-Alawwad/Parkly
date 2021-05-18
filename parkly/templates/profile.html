@@ -32,8 +32,9 @@
     }
 
     .bg-c-lite-green {
-        background: -webkit-gradient(linear, left top, right top, from(#0e4157), to(rgb(16, 31, 44)));
-        background: linear-gradient(to right, rgb(16, 31, 44), #0e4157)
+     background-image:url("https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+    
+     
     }
 
     .user-profile {
@@ -146,10 +147,10 @@
                         <div class="col-sm-4 bg-c-lite-green user-profile" style=" ">
                             <div class="card-block text-center text-white">
                                 <div class="m-b-25"> <img
-                                        src="https://cars.usnews.com/images/article/202002/128389/1_title_2020_kia_optima.jpg"
+                                        src="https://www.watsonmartin.com/wp-content/uploads/2016/03/default-profile-picture.jpg"
                                         width="130px" height="130px"style="border-radius:50%" class="img-radius"
                                         alt="User-Profile-Image"> </div>
-                                <h6 class="f-w-600">Sara Saad</h6>
+                                <h6 class="f-w-600">{{profile.name}}</h6>
                                 <p>VIP plan</p> <i
                                     class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                             </div>
@@ -160,11 +161,11 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Email</p>
-                                        <h6 class="text-muted f-w-400">sara@mail.com</h6>
+                                        <h6 class="text-muted f-w-400">{{user.email}}</h6>
                                     </div>
                                     <div class="col-sm-6">
                                         <p class="m-b-10 f-w-600">Phone</p>
-                                        <h6 class="text-muted f-w-400">5555555555</h6>
+                                        <h6 class="text-muted f-w-400">{{profile.contact_number}}</h6>
                                     </div>
                                 </div>
                                 <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Reservations</h6>

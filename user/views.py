@@ -1,3 +1,6 @@
+from django.shortcuts import render
+
+# Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate , logout
 from user.forms import RegistrationForm, UserAuthForm
@@ -10,11 +13,12 @@ def signup_view(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
+            # email = form.cleaned_data.get('email')
+            # first_name = form.cleaned_data.get('first_name')
+            # last_name = form.cleaned_data.get('last_name')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
+           
             login(request, user)
             return redirect('home')
         else:
@@ -28,6 +32,7 @@ def login_view(request):
 
     context = {}
     user =request.user
+  
     if user.is_authenticated:
         return redirect('home')
     
@@ -40,6 +45,7 @@ def login_view(request):
 
             if user:
                 login(request, user)
+                
                 return redirect('home')
 
     else:
@@ -48,13 +54,7 @@ def login_view(request):
     context['login_form'] = form
     return render(request, 'login.html', context)
 
-def profile_view(request):
-    context = {}
-    user = request.user
-    if user.is_authenticated:
-        context['profile'] = get_object_or_404(User, username=user)
-        return render(request, 'profile.html', context)
-    return redirect('login')
+
 
 def logout_view(request):
     logout(request)

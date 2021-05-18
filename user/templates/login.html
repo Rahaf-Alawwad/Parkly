@@ -1,4 +1,14 @@
 {% extends 'base.html' %}
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+<h1> SIGN IN </h1>
+<form action="" method="POST">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit">
+</form>
+{% endblock %} {% endcomment %}
+
 
 {% load static %}
 {% block content %}
@@ -7,10 +17,10 @@
     <link rel="stylesheet" href="{% static 'css/signup.css' %}">
 </head>
 
-<h2>Register</h2>
+<h2>Sign in</h2>
 <form method="post">
     {% csrf_token %}
-    {% for field in registration_form %}
+    {% for field in login_form %}
         <p>
             {{field.label_tag}}
             {{field}}
@@ -24,7 +34,7 @@
             {% endfor %}
         </p>
     {% endfor %}
-    <button type="submit">Register</button>
+    <button type="submit">Sign in</button>
 
 </form>
 

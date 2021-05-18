@@ -1,8 +1,21 @@
+# from django import forms 
+# from django.contrib.auth.models import User
+# from django.contrib.auth.forms import UserCreationForm
+# from parkly.models import Profile
+
+# class UserForm(UserCreationForm):
+  
+#     class Meta:
+        
+#         model = User
+#         fields = ("username","first_name","last_name","email")
+
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 
-from user.models import User
+from .models import User
 
 
 class RegistrationForm(UserCreationForm):
@@ -19,7 +32,7 @@ class RegistrationForm(UserCreationForm):
 
 class UserAuthForm(forms.ModelForm):
     password = forms.CharField(label='Password' , widget=forms.PasswordInput)
-
+    
     class Meta:
         model = User
         fields= ('username' , 'password')
@@ -30,4 +43,3 @@ class UserAuthForm(forms.ModelForm):
             password= self.cleaned_data['password']
             if not authenticate(username=username,password=password):
                 raise forms.ValidationError("Invalid login")
-        

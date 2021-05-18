@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CRISPY_TEMPLATE_PACK='bootstrap3'
 
 # Application definition
 
@@ -38,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'parkly',
-    'user'
+    'user',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +59,7 @@ ROOT_URLCONF = 'Zeta_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,8 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
+AUTH_USER_MODEL = 'user.User'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Zeta_project/static/'),
+]
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -115,7 +120,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+GEOIP_PATH=os.path.join(BASE_DIR,'geoip')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -125,3 +130,17 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'    
+EMAIL_PORT = 587  
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = 'parkly.noreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'Parkly1234'  
+
+
+LOGIN_URL = "login"
+
+LOGIN_REDIRECT_URL = "home"
+
+LOGOUT_REDIRECT_URL = "login"
