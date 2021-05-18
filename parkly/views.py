@@ -8,12 +8,15 @@ from .filters import LotFilter
 from .forms import RequestForm,RegisterBusinessForm
 from django.http import HttpResponse
 import json
-
+import random 
 # Create your views here.
 
 def home(request):
     return render(request,'home.html' , {}) 
 
+
+def parkingMap(request):
+    return render(request,'map.html',{})
 @login_required()
 def profile(request):
  
@@ -52,7 +55,7 @@ def registerLot(request):
 def parkings(request):
    
     lot = Lot.objects.get(pk=request.POST.get("pk"))
-    return render(request,'reserve.html' , {"prices":"-","lot":lot,"date":"","timeFrom":"","timeTo":"","zipped":[]})
+    return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":lot,"date":"","timeFrom":"","timeTo":"","zipped":[]})
 
 
 @login_required()
@@ -67,11 +70,12 @@ def showParking(request):
         date=request.POST.get("date")
         timeFrom=request.POST.get("timeFrom")
         timeTo=request.POST.get("timeTo")
+        print(request.POST.get("lot"))
         lot = Lot.objects.get(pk=request.POST.get("lot"))
         print(lot)
         parkings = Parking.objects.filter(lot=lot) 
         for i ,parking in enumerate(parkings):
-            if Reservation.objects.filter(Q(parking=parking, date=date,timeFrom__gte=timeFrom ,timeTo__lte=timeTo)).exists(): 
+            if Reservation.objects.filter(Q(parking=parking, date=date,timeFrom__gte=timeFrom ,timeTo__lte=timeTo) |Q(parking=parking, date=date,timeFrom__lte=timeFrom ,timeTo__gte=timeTo) ).exists(): 
                 available_parkings.append(1)
                 
             else:
@@ -80,15 +84,16 @@ def showParking(request):
             lot_parkings.append(parkings[i].park_ID)
         ##End##
         zipped = zip(available_parkings,lot_parkings)
-        return render(request,'reserve.html' , {"prices":prices,"lot":lot,"date":date,"timeFrom":timeFrom,"timeTo":timeTo,"zipped":zipped}) 
+        reentery =  "Yes" if parkings[0].is_reentry_allowed else "No"
+        return render(request,'reserve.html' , {"reentery":reentery,"prices":prices,"lot":lot,"date":date,"timeFrom":timeFrom,"timeTo":timeTo,"zipped":zipped}) 
     else:
-        return render(request,'reserve.html' , {"prices":"-","lot":"","date":"","timeFrom":"","timeTo":"","zipped":[]})
+        return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":"","date":"","timeFrom":"","timeTo":"","zipped":[]})
 
 
 def reserveParking(request):
     lot = Lot.objects.get(pk=request.POST.get("lot"))
     parking = Parking.objects.get(lot=lot, park_ID=request.POST.get("checked-parking"))
-    data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code="10341")
+    data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code=random. random() )
     data.save()
     return render(request,'thanks.html' , {})
 
