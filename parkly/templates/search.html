@@ -18,9 +18,13 @@
     <img class="card-img-top"
         src="{{lots.image}}" alt="Card image" height="250px">
     <div class="card-body">
-        <h4 class="card-title">{{lots.name }}</h4>
+    <form action="{% url 'parkings'%}" method="POST">
+    {% csrf_token %}
+        <h4  class="card-title">{{lots.name }}</h4>
+        <input name="pk" hidden="hidden" value={{lots.id}}>
         <p class="card-text">{{lots.location }}</p>
-        <a href="#" class="btn btn-primary">Check out</a>
+        <input type="submit" href="" class="btn btn-primary" value="Check out">
+        </form>
     </div>
 </div>
 

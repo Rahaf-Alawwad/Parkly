@@ -17,11 +17,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
         crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+
+    
     <!-- JavaScript Bundle with Popper -->
 
 </head>
@@ -30,7 +32,25 @@
 *{
     font-family: karla, serif; 
 }
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(72, 74, 197);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(58, 60, 165);
+}
     .navbar-nav>li {
         margin-left: 30px;
         margin-right: 30px;
@@ -58,7 +78,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" onmouseover="this.style.color = '#eea71b'"
-                        onmouseout="this.style.color = 'white'" style="color: #fff;" href="/reserve">Reserve</a>
+                        onmouseout="this.style.color = 'white'" style="color: #fff;" href="/parking">Reserve</a>
                 </li>
             </ul>
 
