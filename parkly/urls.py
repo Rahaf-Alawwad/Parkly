@@ -19,5 +19,7 @@ urlpatterns = [
     path('search/' , views.search , name= "search" ),
     path('requestSite/' , views.requestSite , name= "requestSite" ),
     path('index/', views.index),
+    path('contactus/', views.contactus),
+
     
 ]
