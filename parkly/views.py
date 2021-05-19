@@ -75,9 +75,7 @@ def parkingMap(request):
 
         connector_line= folium.PolyLine(locations=[fromPoint,toPoint], weight=2, color='green')
         mapImage.add_child(connector_line)
-        instance.location = location
-        instance.distance = distance
-        instance.save()
+
     mapImage = mapImage._repr_html_()   
     minutes = round(distance/0.6)
     context ={
@@ -178,6 +176,8 @@ def registerLot(request):
             form = form.save(commit=False)
             lot= Lot(name =form.name,location =form.location,available_parking =form.available_parking,is_reentry_allowed =form.is_reentry_allowed, price=form.price, owner = request.user )
             lot.save()
+            for i in range(int(form.available_parking)):
+                parking = Parking(park_ID="A"+str(i), lot=lot)
             request.user.user_type=2
             return render (request, 'thanks.html')
         else:

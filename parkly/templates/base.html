@@ -60,6 +60,7 @@
     }
 
     .footer-dark {
+
         padding: 50px 0;
         color: gray;
         background-color: rgba(222, 200, 243, 0.452);
@@ -147,17 +148,18 @@
                 </li>
             </ul>
 
-            <!-- <div class="topnav">
+            <div class="topnav">
                 <div class="search-container">
                     <form method="POST" action="{% url 'search' %}">
                         {% csrf_token %}
                        <input style="font-size:2.3vh" type="text" placeholder="Search venues" name="search">
                         
-                        <button class="btn btn-outline-light m-2" type="submit" style="height:5vh"><i
+                        <button onmouseover="this.style.color = 'rgb(119, 101, 231)'"
+                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;"  class="btn btn-outline-dark m-2" type="submit" style="height:4.7vh"><i
                                 class="fa fa-search"></i></button>
                     </form>
                 </div>
-            </div> -->
+            </div> 
             <div>
 
                 {% if not user.is_authenticated %}
@@ -171,10 +173,10 @@
                 {%else%}
                 <h6 style="color:brown;display:inline-block; padding:0 6px" class="card-subtitle">Welcome, {{user}}</h6>
                 <a onmouseover="this.style.color = 'rgb(119, 101, 231)'"
-                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;" href="{% url 'profile' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
+                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;" href="{% url 'profile' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-dark m-2">
                     Profile</a>
                 <a onmouseover="this.style.color = 'rgb(119, 101, 231)'"
-                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;" href="{% url 'logout' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
+                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;" href="{% url 'logout' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-dark m-2">
                     Logout</a>
 
                 {%endif%}
