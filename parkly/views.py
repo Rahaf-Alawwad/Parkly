@@ -16,6 +16,7 @@ import folium
 # import qrcode
 # import qrcode.image.svg
 from io import BytesIO
+from django.db.models import Count
 
 
 
@@ -45,23 +46,20 @@ def home(request):
 
 
 
-
-
 def parkingMap(request):
     distance=0
     minutes=0
     mapData=get_object_or_404(Measurement,id=1)
     form = mapForm(request.POST or None)
     geolocate = Nominatim(user_agent='measurements')
-    ip="72.14.207.99"
+    ip="2.89.237.20" #request.META.get("REMOTE_ADDR")
     country, city, lat,long= get_geo(ip)
     location=geolocate.geocode(city)
-    print(location)
     locationLatitude = lat
     locationLongitude= long
     fromPoint=(locationLatitude,locationLongitude)
     mapImage= folium.Map(width=500, height=500, location=get_coordinates(locationLatitude,locationLongitude))
-    folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red")).add_to(mapImage)
+    folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red", icon="user")).add_to(mapImage)
     if form.is_valid():
         instance =form.save(commit=False)
         destination_ = form.cleaned_data.get('destination')
@@ -72,10 +70,10 @@ def parkingMap(request):
         toPoint=(destinationLatitude,destinationLongitude)
         distance= round(geodesic(fromPoint,toPoint).km, 2)
         mapImage= folium.Map(width=500, height=500, location=get_coordinates(locationLatitude,locationLongitude,destinationLatitude,destinationLongitude), zoom_start=get_zoom(distance))
-        folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red")).add_to(mapImage)
-        folium.Marker([destinationLatitude,destinationLongitude], tooltip='Click here for more', popup=destination, icon=folium.Icon(color="blue", icon="cloud")).add_to(mapImage)
+        folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red",icon="user")).add_to(mapImage)
+        folium.Marker([destinationLatitude,destinationLongitude], tooltip='Click here for more', popup=destination, icon=folium.Icon(color="blue")).add_to(mapImage)
 
-        connector_line= folium.PolyLine(locations=[fromPoint,toPoint], weight=2, color='black')
+        connector_line= folium.PolyLine(locations=[fromPoint,toPoint], weight=2, color='green')
         mapImage.add_child(connector_line)
         instance.location = location
         instance.distance = distance
@@ -96,8 +94,6 @@ def parkingMap(request):
 
 
 
-
-
 @login_required()
 def profile(request):
  
@@ -106,6 +102,19 @@ def profile(request):
    
     if user.is_authenticated:
         context['profile'] = get_object_or_404(User, username=user)
+        all_reservation=Reservation.objects.filter(Q(user=request.user))
+        try:
+            context['latest']= all_reservation.order_by('date')[0].parking.lot
+
+        except:
+            context['latest']="No reservation"
+
+        try:
+            context['frequent']=all_reservation.values_list('parking').annotate(lot_count=Count('parking.lot')).order_by('-lot_count')[0]
+
+        except:
+            context['frequent']="No reservation"
+
         return render(request, 'user_profile.html', context)
     return redirect('login')     
 
@@ -119,11 +128,18 @@ def profile(request):
 def user_edit(request):
     context = {}
     user = request.user
-    if (request.method == "POST"):
-      User.objects.filter(pk=request.user.id).update(email=request.POST.get('email'),first_name=request.POST.get('first_name'),last_name=request.POST.get('last_name'),contact_number=request.POST.get('contact_number'),location=request.POST.get('location'))
     if user.is_authenticated:
         context['profile'] = get_object_or_404(User, username=user)
-        return render(request, 'user_edit.html', context)
+        
+        if (request.method == "POST"):
+            if request.POST.get('img') == "":
+                img = user.img
+            else:
+                img = request.POST.get('img')
+            User.objects.filter(pk=request.user.id).update(email=request.POST.get('email'),first_name=request.POST.get('first_name'),last_name=request.POST.get('last_name'),contact_number=request.POST.get('contact_number'),location=request.POST.get('location'),img=img)
+            return render(request, 'user_profile.html', context)
+        else:
+            return render(request, 'user_edit.html', context)
     return redirect('login')   
 
 
@@ -141,16 +157,10 @@ def user_delete(request):
 
 
 
-
-
 @login_required()
 def addLot(request):
  
     return render(request,'add_lot.html' , {}) 
-
-
-
-
 
 
 
@@ -163,10 +173,12 @@ def registerLot(request):
         "form":form
     }
     if (request.method == "POST"):
-        owner = Lot.objects.get(pk=request.user.id)
+        
         if (form.is_valid()):
-            lot= Lot(form,  owner = owner )
+            form = form.save(commit=False)
+            lot= Lot(name =form.name,location =form.location,available_parking =form.available_parking,is_reentry_allowed =form.is_reentry_allowed, price=form.price, owner = request.user )
             lot.save()
+            request.user.user_type=2
             return render (request, 'thanks.html')
         else:
             print(form.errors)
@@ -178,16 +190,11 @@ def registerLot(request):
 
 
 
-
-
 @login_required
 def parkings(request):
    
     lot = Lot.objects.get(pk=request.POST.get("pk"))
     return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":lot,"date":"","timeFrom":"","timeTo":"","zipped":[]})
-
-
-
 
 
 
@@ -213,15 +220,14 @@ def showParking(request):
                 
             else:
                 available_parkings.append(0)
-                prices.append(parkings[i].price)
+                prices.append(lot.price)
             lot_parkings.append(parkings[i].park_ID)
    
         zipped = zip(available_parkings,lot_parkings)
-        reentery =  "Yes" if parkings[0].is_reentry_allowed else "No"
+        reentery =  "Yes" if lot.is_reentry_allowed else "No"
         return render(request,'reserve.html' , {"reentery":reentery,"prices":prices,"lot":lot,"date":date,"timeFrom":timeFrom,"timeTo":timeTo,"zipped":zipped}) 
     else:
         return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":"","date":"","timeFrom":"","timeTo":"","zipped":[]})
-
 
 
 
@@ -233,11 +239,9 @@ def showParking(request):
 def reserveParking(request):
     lot = Lot.objects.get(pk=request.POST.get("lot"))
     parking = Parking.objects.get(lot=lot, park_ID=request.POST.get("checked-parking"))
-    data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code=random. random() )
+    data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code=round(random. random()) )
     data.save()
     return render(request,'thanks.html' , {})
-
-
 
 
 

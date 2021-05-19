@@ -4,7 +4,7 @@ from user import views as user_views
 
 urlpatterns = [
     
-    path('/' , views.home , name= "home" ),
+    path('' , views.home , name= "home" ),
     path('lot/add' , views.addLot , name= "addLot" ),
     path('lot/register' , views.registerLot , name= "registerLot" ),
     path('lot/reservation' , views.all_reservation , name= "all_reservation" ),

@@ -15,12 +15,13 @@ choices = (
 
 
 class Lot(models.Model):
-    name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255, null=True)
-    image = models.CharField(max_length=255, null=True)
+    name = models.CharField(verbose_name="Business Name", max_length=255)
+    location = models.CharField(verbose_name="Address",max_length=255, null=True)
+    image = models.CharField(max_length=255, null=True, default="https://cache3.pakwheels.com/assets/dealers/original/missing.png")
     available_parking = models.PositiveIntegerField(null=False)
     owner = models.OneToOneField(User , related_name="owner" ,on_delete=models.CASCADE, null=True) ## each lot has one owner
-
+    is_reentry_allowed = models.BooleanField(null=True, default=False)
+    price =  models.DecimalField(verbose_name="Price per parking",max_digits=10,null=False,decimal_places=2, default=10)
     def __str__(self):
         return self.name
 
@@ -32,8 +33,7 @@ class Parking(models.Model):
     lot = models.ForeignKey(Lot , related_name="lot" ,on_delete=models.CASCADE, null=True) ## each parking has one lot
     park_ID = models.CharField(max_length=4, null=True)
     available = models.BooleanField(default=True)
-    is_reentry_allowed = models.BooleanField(null=True)
-    price =  models.DecimalField(max_digits=10,null=False,decimal_places=2)
+
    
     def __str__(self):
         return self.park_ID
