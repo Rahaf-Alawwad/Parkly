@@ -46,7 +46,7 @@ class Reservation(models.Model):
     reservation_date=models.DateField(null=True)
     timeFrom = models.TimeField(null=True)
     timeTo = models.TimeField(null=True)
-    code = models.CharField(max_length=10, unique=True)
+    code = models.CharField(max_length=255)
     cost= models.PositiveIntegerField(null=False)
     is_paid = models.BooleanField(default=False)
     user = models.ForeignKey(User , related_name="profile" ,on_delete=models.CASCADE, null=True) ## user might have more than one reservation

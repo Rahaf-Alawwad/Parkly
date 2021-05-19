@@ -13,8 +13,8 @@ from geopy.distance import geodesic
 from .utils import get_geo, get_coordinates,get_zoom
 import folium
 # Create your views here.
-# import qrcode
-# import qrcode.image.svg
+import qrcode
+import qrcode.image.svg
 from io import BytesIO
 from django.db.models import Count
 
@@ -239,7 +239,7 @@ def showParking(request):
 def reserveParking(request):
     lot = Lot.objects.get(pk=request.POST.get("lot"))
     parking = Parking.objects.get(lot=lot, park_ID=request.POST.get("checked-parking"))
-    data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code=round(random. random()) )
+    data = Reservation(code="https://chart.googleapis.com/chart?cht=qr&chl=" + round(random.random()) + "&chs=160x160&chld=L|0", user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")) )
     data.save()
     return render(request,'thanks.html' , {})
 
