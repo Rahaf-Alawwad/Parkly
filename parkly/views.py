@@ -237,13 +237,14 @@ def showParking(request):
 
 @login_required()
 def reserveParking(request):
+    
+    print(request.POST.get("lot"))
     lot = Lot.objects.get(pk=request.POST.get("lot"))
     parking = Parking.objects.get(lot=lot, park_ID=request.POST.get("checked-parking"))
-    data = Reservation(code="https://chart.googleapis.com/chart?cht=qr&chl=" + round(random.random()) + "&chs=160x160&chld=L|0", user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")) )
+    data = Reservation(code="https://chart.googleapis.com/chart?cht=qr&chl=" + str(round(random.random())) + "&chs=160x160&chld=L|0", user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")) )
+    print("https://chart.googleapis.com/chart?cht=qr&chl=" +  str(round(random.random())) + "&chs=160x160&chld=L|0")
     data.save()
-    return render(request,'thanks.html' , {})
-
-
+    return render (request, 'simple_checkout.html')
 
 
 
@@ -329,5 +330,42 @@ def simpleCheckout(request):
     return render (request, 'simple_checkout.html')
 
 def success(request):
-    print('Hi')
-    return render (request, 'qr.html')
+    reservation = Reservation.objects.filter(user=request.user).last()
+    lot = reservation.parking.lot
+    distance=0
+    minutes=0
+    geolocate = Nominatim(user_agent='measurements')
+    ip="2.89.237.20" #request.META.get("REMOTE_ADDR")
+    country, city, lat,long= get_geo(ip)
+    location=geolocate.geocode(city)
+    locationLatitude = lat
+    locationLongitude= long
+    fromPoint=(locationLatitude,locationLongitude)
+    destination = geolocate.geocode(lot)
+    destinationLatitude=destination.latitude
+    destinationLongitude=destination.longitude
+    toPoint=(destinationLatitude,destinationLongitude)
+    distance= round(geodesic(fromPoint,toPoint).km, 2)
+    mapImage= folium.Map(width=500, height=500, location=get_coordinates(locationLatitude,locationLongitude,destinationLatitude,destinationLongitude), zoom_start=get_zoom(distance))
+    folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red",icon="user")).add_to(mapImage)
+    folium.Marker([destinationLatitude,destinationLongitude], tooltip='Click here for more', popup=destination, icon=folium.Icon(color="blue")).add_to(mapImage)
+    
+    
+    # place= Measurement(destination=destination)
+
+    # instance =place.save(commit=False)
+    connector_line= folium.PolyLine(locations=[fromPoint,toPoint], weight=2, color='green')
+    mapImage.add_child(connector_line)
+    # instance.location = location
+    # instance.distance = distance
+    mapImage = mapImage._repr_html_()   
+    minutes = round(distance/0.6)
+    context ={
+        'distance': distance,
+        'minutes':minutes,
+        'mapImage':mapImage,
+        'reservation':reservation
+    }
+
+    
+    return render (request, 'confirmation.html',context)

@@ -703,7 +703,7 @@
                         <hr>
                         <input class="input" style="display:inline-block" hidden="hidden" name="price"
                             value={{prices.0}}>
-                        <input hidden="hidden" value="{{lot.id}}" name="lot">
+                        <input  value="{{lot.id}}" name="lot">
                         <section>
                             <div style="float:left;margin-right:20px;">
                                 <label style="display: block;" for="timeFrom">From</label>
@@ -768,12 +768,44 @@
 
                 </ol><br /><br />
 
-                <button style="width:100%" onclick="this.form.action='reserve/'" type="submit"
+                {% comment %} <button style="width:100%" onclick="this.form.action='reserve/'" type="submit"
                     class="btn btn-outline-success">
                     Reserve Parking
                         <!-- Set up a container element for the button -->
-                </button>
+                </button> {% endcomment %}
+                <button style="outline:none; border:none;width:100%; background-color:transparent" onclick="this.form.action='reserve/'" type="submit"
+                    class="btn btn-outline-success">
+                <a href="">
+                    <div class="container">
+                        <div class="left-side">
+                            <div class="card">
+                                <div class="card-line"></div>
+                                <div class="buttons"></div>
+                            </div>
+                            <div class="post">
+                                <div class="post-line"></div>
+                                <div class="screen">
+                                    <div class="dollar">$</div>
+                                </div>
+                                <div class="numbers"></div>
+                                <div class="numbers-line2"></div>
+                            </div>
+                        </div>
+                        <div class="right-side">
+                            <div class="new">Proceed to checkout</div>
 
+                            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
+                                viewBox="0 0 451.846 451.847">
+                                <path
+                                    d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"
+                                    data-original="#000000" class="active-path" data-old_color="#000000"
+                                    fill="#cfcfcf" />
+                            </svg>
+
+                        </div>
+                    </div>
+                </a>
+                </button> 
                 <!--Paypal Starts-->
     <!-- Set up a container element for the button -->
     <!-- <div id="paypal-button-container"></div> -->
@@ -799,7 +831,7 @@
                     })
 
                 </script>
-                </script>
+               
                 <script>
                     function htmlEncode(value) {
                         return $('<div/>').text(value).html();
@@ -823,36 +855,7 @@
 
 
                     <!--PAY ICONS-->
-                <a href="/simple-checkout/">
-                    <div class="container">
-                        <div class="left-side">
-                            <div class="card">
-                                <div class="card-line"></div>
-                                <div class="buttons"></div>
-                            </div>
-                            <div class="post">
-                                <div class="post-line"></div>
-                                <div class="screen">
-                                    <div class="dollar">$</div>
-                                </div>
-                                <div class="numbers"></div>
-                                <div class="numbers-line2"></div>
-                            </div>
-                        </div>
-                        <div class="right-side">
-                            <div class="new">Pay by card</div>
 
-                            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
-                                viewBox="0 0 451.846 451.847">
-                                <path
-                                    d="M345.441 248.292L151.154 442.573c-12.359 12.365-32.397 12.365-44.75 0-12.354-12.354-12.354-32.391 0-44.744L278.318 225.92 106.409 54.017c-12.354-12.359-12.354-32.394 0-44.748 12.354-12.359 32.391-12.359 44.75 0l194.287 194.284c6.177 6.18 9.262 14.271 9.262 22.366 0 8.099-3.091 16.196-9.267 22.373z"
-                                    data-original="#000000" class="active-path" data-old_color="#000000"
-                                    fill="#cfcfcf" />
-                            </svg>
-
-                        </div>
-                    </div>
-                </a>
                     <!-- <br> -->
                     
                     <!-- <div class="container">
