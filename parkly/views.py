@@ -45,15 +45,13 @@ def home(request):
 
 
 
-
-
 def parkingMap(request):
     distance=0
     minutes=0
     mapData=get_object_or_404(Measurement,id=1)
     form = mapForm(request.POST or None)
     geolocate = Nominatim(user_agent='measurements')
-    ip="72.14.207.99"
+    ip="2.89.237.20"
     country, city, lat,long= get_geo(ip)
     location=geolocate.geocode(city)
     print(location)
@@ -90,8 +88,6 @@ def parkingMap(request):
     }
 
     return render(request,'map.html',context)
-
-
 
 
 
