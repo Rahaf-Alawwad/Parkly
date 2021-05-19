@@ -23,11 +23,11 @@ class RegistrationForm(UserCreationForm):
     first_name        = forms.CharField(max_length=20, help_text='Required. Add a valid first name')
     last_name        = forms.CharField( max_length=20, help_text='Required. Add a valid last name')
     email           = forms.EmailField(max_length=60, help_text='Required. Add a valid email address')
-    img           = forms.CharField(max_length=1000,help_text='Required. Add a valid profile imgae url')
+  
     
     class Meta:
         model = User
-        fields = ('username', 'first_name','last_name','email', 'img','password1', 'password2')
+        fields = ('username', 'first_name','last_name','email','password1', 'password2')
 
 
 class UserAuthForm(forms.ModelForm):

@@ -15,7 +15,7 @@ def get_coordinates(latLocation, longLocation, latDestination=None, longDestinat
 
 def get_zoom(distance):
     if distance <= 100:
-        return 8
+        return 10
     elif distance > 100 and distance< 5000:
         return 4
     else:
