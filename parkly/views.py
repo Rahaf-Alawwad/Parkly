@@ -42,6 +42,8 @@ def index(request):
 def home(request):
     return render(request,'home.html' , {}) 
 
+def contactus(request):
+    return render(request,'contactus.html' , {}) 
 
 
 
