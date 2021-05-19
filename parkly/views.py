@@ -6,17 +6,43 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .filters import LotFilter
 from .forms import RequestForm,RegisterBusinessForm,mapForm
-from django.http import HttpResponse
-import json
+from django.contrib import messages
 import random 
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from .utils import get_geo, get_coordinates,get_zoom
 import folium
 # Create your views here.
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+
+
+
+
+
+def index(request):
+    context = {}
+    if request.method == "POST":
+        factory = qrcode.image.svg.SvgImage
+        img = qrcode.make(request.POST.get("qr_text",""), image_factory=factory, box_size=20)
+        stream = BytesIO()
+        img.save(stream)
+        context["svg"] = stream.getvalue().decode()
+
+    return render(request, "qr.html", context=context)
+
+
+
+
+
+
 
 def home(request):
     return render(request,'home.html' , {}) 
+
+
+
 
 
 def parkingMap(request):
@@ -25,7 +51,7 @@ def parkingMap(request):
     mapData=get_object_or_404(Measurement,id=1)
     form = mapForm(request.POST or None)
     geolocate = Nominatim(user_agent='measurements')
-    ip="72.14.207.99"
+    ip="2.89.237.20"
     country, city, lat,long= get_geo(ip)
     location=geolocate.geocode(city)
     print(location)
@@ -64,6 +90,10 @@ def parkingMap(request):
     return render(request,'map.html',context)
 
 
+
+
+
+
 @login_required()
 def profile(request):
  
@@ -72,8 +102,41 @@ def profile(request):
    
     if user.is_authenticated:
         context['profile'] = get_object_or_404(User, username=user)
-        return render(request, 'profile.html', context)
+        return render(request, 'user_profile.html', context)
     return redirect('login')     
+
+
+
+
+
+
+
+@login_required()
+def user_edit(request):
+    context = {}
+    user = request.user
+    if (request.method == "POST"):
+      User.objects.filter(pk=request.user.id).update(email=request.POST.get('email'),first_name=request.POST.get('first_name'),last_name=request.POST.get('last_name'),contact_number=request.POST.get('contact_number'),location=request.POST.get('location'))
+    if user.is_authenticated:
+        context['profile'] = get_object_or_404(User, username=user)
+        return render(request, 'user_edit.html', context)
+    return redirect('login')   
+
+
+
+
+
+
+@login_required()
+def user_delete(request):
+        user = User.objects.get(pk=request.user.id)
+        user.delete()
+        messages.success(request, "The account is deleted") 
+        return render(request,'home.html' , {})  
+
+
+
+
 
 
 @login_required()
@@ -81,16 +144,25 @@ def addLot(request):
  
     return render(request,'add_lot.html' , {}) 
 
+
+
+
+
+
+
+
 @login_required()
 def registerLot(request):
+   
     form = RegisterBusinessForm(request.POST or None)
     context={
         "form":form
     }
     if (request.method == "POST"):
-        
+        owner = Lot.objects.get(pk=request.user.id)
         if (form.is_valid()):
-            form.save()
+            lot= Lot(form,  owner = owner )
+            lot.save()
             return render (request, 'thanks.html')
         else:
             print(form.errors)
@@ -98,7 +170,10 @@ def registerLot(request):
         return render (request, 'owner/register_business.html',context)
 
  
-    
+
+
+
+
 
 
 @login_required
@@ -108,11 +183,15 @@ def parkings(request):
     return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":lot,"date":"","timeFrom":"","timeTo":"","zipped":[]})
 
 
+
+
+
+
+
+
 @login_required()
 def showParking(request):
-    
-    ##Begin##
-    #print("request Post: ",request.POST)
+
     if (request.method == "POST"): 
         available_parkings =[]
         lot_parkings=[]
@@ -132,12 +211,19 @@ def showParking(request):
                 available_parkings.append(0)
                 prices.append(parkings[i].price)
             lot_parkings.append(parkings[i].park_ID)
-        ##End##
+   
         zipped = zip(available_parkings,lot_parkings)
         reentery =  "Yes" if parkings[0].is_reentry_allowed else "No"
         return render(request,'reserve.html' , {"reentery":reentery,"prices":prices,"lot":lot,"date":date,"timeFrom":timeFrom,"timeTo":timeTo,"zipped":zipped}) 
     else:
         return render(request,'reserve.html' , {"reentery":"No","prices":"0","lot":"","date":"","timeFrom":"","timeTo":"","zipped":[]})
+
+
+
+
+
+
+
 
 @login_required()
 def reserveParking(request):
@@ -146,6 +232,42 @@ def reserveParking(request):
     data = Reservation( user = request.user, date=request.POST.get("date"), timeFrom=request.POST.get("timeFrom"),timeTo=request.POST.get("timeTo") ,parking=parking, cost=float(request.POST.get("price")),code=random. random() )
     data.save()
     return render(request,'thanks.html' , {})
+
+
+
+
+
+
+
+
+@login_required()
+def all_reservation(request):
+    user=request.user
+    allReservations=Q()
+    first=True
+    if(user.user_type=="2"):
+        lot = Lot.objects.get(owner=user)
+        allParkings=Parking.objects.filter(lot=lot)
+        for parking in allParkings:
+            result=Reservation.objects.filter(parking=parking)
+          
+            if first and len(result)>0 :
+                allReservations=result
+            
+                first=False
+            elif len(result)>0:  
+                allReservations.union(result)
+
+        
+        return render(request,'owner/reservations.html' , {"allReservations":allReservations})
+    else:
+        return redirect('home')
+
+
+
+
+
+
 
 @login_required()
 def search(request):
@@ -163,6 +285,12 @@ def search(request):
     context={"filter":filter,"lotsFilter":lotsFilter, "search":search, "length":length}
     return render (request, 'search.html',context)
 
+
+
+
+
+
+
 @login_required()
 def requestSite(request):
    
@@ -175,3 +303,15 @@ def requestSite(request):
             print(site.errors)
     else:
         return render (request, 'site_request.html')
+
+
+
+
+
+@login_required()
+def lot_scanner(request):
+    user=request.user
+    if(user.user_type=="2"):
+        return render (request, 'owner/scanner.html')
+    else:
+        return render (request, 'home.html')

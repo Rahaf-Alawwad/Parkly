@@ -28,7 +28,7 @@
     <div class="main-w3layouts wrapper">
     <div class="main-agileinfo">
         <div class="agileits-top">
-            <action="#" method="post">
+            <form method="post">
                
                 {% csrf_token %}
                 {% for field in login_form %}
@@ -46,19 +46,19 @@
                 </p>
                 {% endfor %}
             
-                <div class="wthree-text">
+                {% comment %} <div class="wthree-text">
                     <br>
                     <label class="anim">
                         <input type="checkbox" class="checkbox" required="">
                         <span>I Agree To The Terms & Conditions</span>
                     </label>
                     <div class="clear"> </div>
-                </div>
+                </div> {% endcomment %}
                 <button class="submit" type="submit">LOG IN</button>
             </form>
             <h2>Don't have an Account? <a href="{% url 'signup' %}"> Signup Now!</a></h2>
             <br>
-            <h2>Forget your Password ? <a href="{% url 'signup' %}"> Reset Password !</a></h2>
+            <h2>Forget your Password ? <a href="{% url 'password_reset' %}"> Reset Password !</a></h2>
         </div>
     </div>
 </form>

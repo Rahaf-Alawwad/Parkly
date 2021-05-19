@@ -24,6 +24,9 @@ class Lot(models.Model):
     def __str__(self):
         return self.name
 
+
+
+
 class Parking(models.Model):
 
     lot = models.ForeignKey(Lot , related_name="lot" ,on_delete=models.CASCADE, null=True) ## each parking has one lot
@@ -34,6 +37,8 @@ class Parking(models.Model):
    
     def __str__(self):
         return self.park_ID
+
+
 
 
 class Reservation(models.Model):
@@ -50,11 +55,18 @@ class Reservation(models.Model):
     def __str__(self):
         return self.code
 
+
+
+
 class SiteRequests(models.Model):
     name = models.CharField(max_length=255)
     website=models.CharField(max_length=255)
     def __str__(self):
         return self.name
+
+
+
+
 
 class Measurement(models.Model):
     location = models.CharField(max_length=255)
