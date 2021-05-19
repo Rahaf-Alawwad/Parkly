@@ -19,5 +19,9 @@ urlpatterns = [
     path('search/' , views.search , name= "search" ),
     path('requestSite/' , views.requestSite , name= "requestSite" ),
     path('index/', views.index),
-    
+    #PayPal
+	path('simple-checkout/', views.simpleCheckout, name="simple-checkout"),
+    # path('', views.store, name="store"),
+    # path('checkout/', views.checkout, name="checkout"),
+    # path('complete/', views.paymentComplete, name="complete"),
 ]

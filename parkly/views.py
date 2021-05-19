@@ -13,8 +13,8 @@ from geopy.distance import geodesic
 from .utils import get_geo, get_coordinates,get_zoom
 import folium
 # Create your views here.
-import qrcode
-import qrcode.image.svg
+# import qrcode
+# import qrcode.image.svg
 from io import BytesIO
 
 
@@ -319,3 +319,7 @@ def lot_scanner(request):
         return render (request, 'owner/scanner.html')
     else:
         return render (request, 'home.html')
+
+#paypal checkout
+def simpleCheckout(request):
+    return render (request, 'simple_checkout.html')
