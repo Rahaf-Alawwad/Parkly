@@ -61,7 +61,7 @@
 
 
     <nav class="navbar navbar-expand-sm navbar-light"
-        style="padding: 0.3% 2%;border-bottom:4px solid #eea71b;font-size: 2.5vh;background-color: rgb(131, 131, 131);">
+        style="padding: 0.3% 2%;border-bottom:4px solid rgba(163 , 160 , 180);font-size: 2.5vh;background-color: rgba(83, 78, 78, 0.5);">
         <a class="navbar-brand " href="/home"> <img id="logo" src="{% static 'uploads/logo2_auto_x2.png' %}" alt="logo"
                 width="100vh"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -72,26 +72,27 @@
 
             <ul class="navbar-nav mr-auto mt-2 mt-lg-1">
                 <li class="nav-item">
-                    <a class="nav-link" onmouseover="this.style.color = '#eea71b'"
-                        onmouseout="this.style.color = 'white'" style="color: #fff;" href="{% url 'home' %}">Home
+                    <a class="nav-link" onmouseover="this.style.color = 'rgb(119, 101, 231)'"
+                        onmouseout="this.style.color = 'white'" style="color: white;" href="{% url 'home' %}">Home
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" onmouseover="this.style.color = '#eea71b'"
-                        onmouseout="this.style.color = 'white'" style="color: #fff;" href="/parking">Reserve</a>
+                    <a class="nav-link" onmouseover="this.style.color = 'rgb(119, 101, 231)'"
+                        onmouseout="this.style.color = 'white'" style="color: white;" href="/parking">Reserve</a>
                 </li>
             </ul>
 
-            <div class="topnav">
+            <!-- <div class="topnav">
                 <div class="search-container">
                     <form method="POST" action="{% url 'search' %}">
                         {% csrf_token %}
-                        <input style="font-size:2.3vh" type="text" placeholder="Search venues" name="search">
-                        <button class="btn btn-outline-light m-2" type="submit" style="height:4vh"><i
+                       <input style="font-size:2.3vh" type="text" placeholder="Search venues" name="search">
+                        
+                        <button class="btn btn-outline-light m-2" type="submit" style="height:5vh"><i
                                 class="fa fa-search"></i></button>
                     </form>
                 </div>
-            </div>
+            </div> -->
             <div>
 
                 {% if not user.is_authenticated %}
@@ -101,7 +102,7 @@
                     register</a>
 
                 {%else%}
-                <h6 style="color:white;display:inline-block; padding:0 6px" class="card-subtitle">Welcome, {{user}}</h6>
+                <h6 style="color:brown;display:inline-block; padding:0 6px" class="card-subtitle">Welcome, {{user}}</h6>
                 <a href="{% url 'profile' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
                     Profile</a>
                 <a href="{% url 'logout' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-light m-2">
@@ -127,6 +128,40 @@
 
     {% block content%}
     {% endblock %}
+
+    
 </body>
+<div class="footer-dark">
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-3 item">
+                    <h3>Site Map</h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="/parking">Reserve</a></li>
+                        <li><a href="{% url 'signup' %}">Signup</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6 col-md-3 item">
+                    <h3>About</h3>
+                    <ul>
+                        <li><a href="#">Company</a></li>
+                        <li><a href="#">Team</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 item text">
+                    <h3>PARKLY</h3>
+                    <p>Praesent sed lobortis mi. Suspendisse vel placerat ligula. Vivamus ac sem lacus. Ut vehicula rhoncus elementum. Etiam quis tristique lectus. Aliquam in arcu eget velit pulvinar dictum vel in justo.</p>
+                </div>
+                <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
+            </div>
+            <p class="copyright">ZETA © 2021</p>
+        </div>
+    </footer>
+</div>
+
+
 
 </html>
