@@ -3,6 +3,7 @@ from django.conf import settings
 from django.views.generic.base import TemplateView
 import stripe
 from parkly.models import *
+import random
 # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
