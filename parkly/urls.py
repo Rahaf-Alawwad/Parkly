@@ -21,6 +21,7 @@ urlpatterns = [
     path('index/', views.index),
     #PayPal
 	path('simple-checkout/', views.simpleCheckout, name="simple-checkout"),
+    path('simple-checkout/success', views.success, name="success"),
     # path('', views.store, name="store"),
     # path('checkout/', views.checkout, name="checkout"),
     # path('complete/', views.paymentComplete, name="complete"),

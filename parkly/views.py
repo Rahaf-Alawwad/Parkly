@@ -323,3 +323,7 @@ def lot_scanner(request):
 #paypal checkout
 def simpleCheckout(request):
     return render (request, 'simple_checkout.html')
+
+def success(request):
+    print('Hi')
+    return render (request, 'qr.html')

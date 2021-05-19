@@ -771,49 +771,13 @@
                 <button style="width:100%" onclick="this.form.action='reserve/'" type="submit"
                     class="btn btn-outline-success">
                     Reserve Parking
+                        <!-- Set up a container element for the button -->
                 </button>
 
                 <!--Paypal Starts-->
-
     <!-- Set up a container element for the button -->
-    <div id="paypal-button-container"></div>
+    <!-- <div id="paypal-button-container"></div> -->
     
-    <!-- Include the PayPal JavaScript SDK -->
-    <script src="https://www.paypal.com/sdk/js?client-id=Ael83lt9BUm5okf8r67dmQ-QWZIRcNVmucSwHSfzO7xiK7WDIlooZgyChlmfTH8BlIFUwjMSsJMCarjl&currency=USD"></script>
-    
-    <script>
-        // var total = '{{lot.price}}'
-        // Render the PayPal button into #paypal-button-container
-        paypal.Buttons({
-            style: {
-                color: 'blue',
-                shape: 'pill',
-                label: 'pay',
-            },
-
-            // Set up the transaction
-            createOrder: function (data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: 10.99
-                        }
-                    }]
-                });
-            },
-
-            // Finalize the transaction
-            onApprove: function (data, actions) {
-                return actions.order.capture().then(function (details) {
-                    // Show a success message to the buyer
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                });
-            }
-
-
-        }).render('#paypal-button-container');
-    </script>
-            <!--Paypal Ends-->
                 </form>
                 <br /><br />
 
@@ -858,7 +822,8 @@
 
 
 
-
+                    <!--PAY ICONS-->
+                <a href="/simple_checkout.html/">
                     <div class="container">
                         <div class="left-side">
                             <div class="card">
@@ -887,9 +852,10 @@
 
                         </div>
                     </div>
-                    <br>
-
-                    <div class="container">
+                </a>
+                    <!-- <br> -->
+                    
+                    <!-- <div class="container">
                         <div class="left-side">
                             <div><span class="icon-cash"></span>
 
@@ -915,11 +881,38 @@
                             </svg>
 
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
             </div>
         </div>
     </div>
     <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    <!-- <script>
+        var amount = {{prices}}
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script> -->
     {% endblock %}
