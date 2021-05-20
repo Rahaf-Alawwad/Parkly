@@ -391,7 +391,7 @@ def contactus(request):
     if (request.method == "POST"):
         now=datetime.now().time()
         # time= "day" if now >= datetime.time(4,00,00) or now <=  datetime.time(18,00,00) else "night"
-        subject = 'welcome to GFG world'
+        subject = 'Welcome to Parkly'
         message = f'Hi {request.POST.get("name")}, thank you for your message, we will respond shortly. \n Have a good {time}'
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [request.POST.get("email"), ]

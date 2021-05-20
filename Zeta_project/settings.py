@@ -82,17 +82,17 @@ WSGI_APPLICATION = 'Zeta_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config()
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -159,5 +159,5 @@ STRIPE_SECRET_KEY = 'sk_test_51IrvjPJRtXQC3iPwTkm0fCf9tpc7Mb3oXlEa2zoymuaCL18b4N
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51IrvjPJRtXQC3iPwA5g9Y8dybrT69HdWtkgWtFwWLdEDWzJ3k43nqy8SWncIL67W0HJgTtQLsbLeLt5BNLI9AQoT00geQW4qrF'
 
 
-STATIC_ROOT= os.path.join(BASE_DIR, 'static')
-django_heroku.settings(locals())
+# STATIC_ROOT= os.path.join(BASE_DIR, 'static')
+# django_heroku.settings(locals())
