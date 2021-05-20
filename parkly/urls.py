@@ -18,7 +18,8 @@ urlpatterns = [
     path('profile/delete', views.user_delete, name="user_delete"),
     path('search/' , views.search , name= "search" ),
     path('requestSite/' , views.requestSite , name= "requestSite" ),
-    path('index/', views.index),
+    path('reservations/', views.user_reservations, name="user_reservations"),
+    path('reservation/cancel/', views.user_reservations_cancel, name="user_reservations_cancel"),
     #PayPal
 	path('simple-checkout/', views.simpleCheckout, name="simple-checkout"),
     path('simple-checkout/success', views.success, name="success"),

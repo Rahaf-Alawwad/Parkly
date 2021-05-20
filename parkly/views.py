@@ -17,6 +17,9 @@ import qrcode
 import qrcode.image.svg
 from io import BytesIO
 from django.db.models import Count
+from datetime import date 
+from django.core.mail import send_mail
+from Zeta_project import settings
 
 
 
@@ -348,26 +351,50 @@ def success(request):
     destinationLongitude=destination.longitude
     toPoint=(destinationLatitude,destinationLongitude)
     distance= round(geodesic(fromPoint,toPoint).km, 2)
-    mapImage= folium.Map(width=500, height=500, location=get_coordinates(locationLatitude,locationLongitude,destinationLatitude,destinationLongitude), zoom_start=get_zoom(distance))
+    mapImage= folium.Map(width=300, height=250, location=get_coordinates(locationLatitude,locationLongitude,destinationLatitude,destinationLongitude), zoom_start=get_zoom(distance))
     folium.Marker([locationLatitude,locationLongitude], tooltip='Click here for more', popup=city['city'], icon=folium.Icon(color="red",icon="user")).add_to(mapImage)
     folium.Marker([destinationLatitude,destinationLongitude], tooltip='Click here for more', popup=destination, icon=folium.Icon(color="blue")).add_to(mapImage)
     
-    
-    # place= Measurement(destination=destination)
-
-    # instance =place.save(commit=False)
     connector_line= folium.PolyLine(locations=[fromPoint,toPoint], weight=2, color='green')
     mapImage.add_child(connector_line)
-    # instance.location = location
-    # instance.distance = distance
+
     mapImage = mapImage._repr_html_()   
     minutes = round(distance/0.6)
     context ={
         'distance': distance,
         'minutes':minutes,
         'mapImage':mapImage,
-        'reservation':reservation
+        'reservation':reservation,
+        "lot":lot,
     }
 
     
     return render (request, 'confirmation.html',context)
+
+
+def user_reservations(request):
+    
+    all_reservation=Reservation.objects.filter(user=request.user)
+    current= all_reservation.filter(date__gte=date.today())
+    return render (request, 'user_reservations.html', {"current":current})
+
+
+def user_reservations_cancel(request):
+    
+    reservation = Reservation.objects.get(pk=request.POST.get("pk"))
+    reservation.delete()
+    messages.success(request, "The reservation is cancelled") 
+    return redirect ('user_reservations')
+
+def contactus(request):
+    if (request.method == "POST"):
+        now=datetime.now().time()
+        # time= "day" if now >= datetime.time(4,00,00) or now <=  datetime.time(18,00,00) else "night"
+        subject = 'welcome to GFG world'
+        message = f'Hi {request.POST.get("name")}, thank you for your message, we will respond shortly. \n Have a good {time}'
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [request.POST.get("email"), ]
+        send_mail( subject, message, email_from, recipient_list )
+        return render (request, 'home.html') 
+    else:
+        return render (request, 'contactus.html') 

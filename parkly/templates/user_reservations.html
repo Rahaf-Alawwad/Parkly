@@ -1,16 +1,9 @@
-{% extends 'base.html' %}
-{% comment %} {% extends 'base.html' %}
-{% block content %}
-<!-- <h1> SIGN IN </h1>
-<form action="" method="POST">
-    {% csrf_token %}
-    {{form.as_p}} 
-   <input type="submit">
-</form>  -->
-{% endblock %} {% endcomment %}
 
-{% load static %}
+
+{% extends 'base.html' %}
 {% block content %}
+{% load static %}
+
 <head>
     <link rel="stylesheet" href="{% static 'css/signup.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,46 +17,57 @@
     <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
     <!-- //web font -->
 </head>
+
 <body>
-    <div class="main-w3layouts wrapper">
-    <div class="main-agileinfo">
-        <div class="agileits-top">
-            <form method="post">
-                {% csrf_token %}
-                {{form}}
-                {% for field in RegisterBusinessForm %}
-                    <p>
-                        {{field.label_tag}}
-                        {{field}}
-                        {% if field.help_text %}
-                            <small style="color: grey;">{{field.help_text}}</small>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <p style="color: red;">{{error}}</p>
-                        {% endfor %}
-                    </p>
-                {% endfor %}
-               
-                <button class="submit" type="submit">REGISTER</button>
-            </form>
-            
-        </div>
+    
+<h1> Your Reservations </h1>
+
+{%if current.count > 0%}
+
+{% for reservation in current%}
+
+<div class="card" style="width:300px; margin:20px; display:inline-block">
+    <form action="{% url 'user_reservations_cancel' %}"method="POST">
+        {% csrf_token %}
+    <img class="card-img-top"
+        src="{{reservation.code}}" alt="Card image" height="250px">
+    <div class="card-body">
+        <h4  class="card-title">{{reservation.parking.park_ID}}</h4>
+        <input hidden="hidden" name="pk"  value={{reservation.id}}>
+        <p class="card-text">{{reservation.timeFrom}} - {{reservation.timeTo}}</p>
+
+        <button style="width:100%" type="submit" class="btn btn-outline-danger">
+             Cancel
+        </button>
+    </form>
     </div>
 </div>
-<!-- //copyright -->
-<ul class="colorlib-bubbles">
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-</ul>
-</div>
+{%endfor%}
+{%else%}
+<img style=" display:block;width:200px"src="https://image.freepik.com/free-vector/website-faq-section-user-helpdesk-customer-support-frequently-asked-questions-problem-solution-quiz-game-confused-man-cartoon-character_335657-3537.jpg" alt="empty">
+
+<h3 style="display:inline-block" > You have no Reservation </h3>
+<a href="/search"style="display:inline-block; font-size:20px"> Book now </a>
+{%endif%}
+
+
+
+
+
+    <!-- //copyright -->
+    <ul class="colorlib-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    </div>
 
 </body>
 
@@ -78,9 +82,7 @@
     applet,
     object,
     iframe,
-    h1,
     h2,
-    h3,
     h4,
     h5,
     h6,
@@ -157,9 +159,11 @@
         font-size: 100%;
         font: inherit;
         vertical-align: baseline;
+        align-items: center;
+        text-align: center;
     }
-    
-    label{
+
+    label {
         color: gray;
         font-weight: bold;
     }
@@ -274,10 +278,10 @@
 
     /*-- end reset --*/
     body {
-        background: rgba(163 , 160 , 180);
+        background: rgba(163, 160, 180);
         /* fallback for old browsers */
         background: -webkit-linear-gradient(to top, rgb(255, 255, 255), rgb(248, 248, 248));
-        background: -moz-linear-gradient(to top,rgb(255, 255, 255), rgb(255, 255, 255));
+        background: -moz-linear-gradient(to top, rgb(255, 255, 255), rgb(255, 255, 255));
         background: -o-linear-gradient(to top, rgb(255, 255, 255), rgb(255, 255, 255));
         background: linear-gradient(to top, rgb(255, 255, 255), rgb(255, 255, 255));
         background-size: cover;
@@ -288,13 +292,22 @@
     h1 {
         font-size: 3em;
         text-align: center;
-        color: #fff;
+        color: gray;
         font-weight: 100;
         text-transform: capitalize;
         letter-spacing: 4px;
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Times New Roman', Times, serif;
     }
 
+    .h3 {
+        font-size: 2em;
+        text-align: center;
+        color: black;
+        font-weight: 50;
+        text-transform: capitalize;
+        letter-spacing: 4px;
+        font-family: 'Courier New', Courier, monospace;
+    }
 
     /*-- main --*/
     .main-w3layouts {
@@ -359,7 +372,7 @@
     }
 
     ::-webkit-input-placeholder {
-        color: rgb(0,0,0);
+        color: rgb(0, 0, 0);
         font-weight: 100;
     }
 
@@ -377,12 +390,12 @@
         color: #fff;
     }
 
-    .submit{
+    .submit {
         font-size: .9em;
         color: #fff;
-        background: rgba(163 , 160 , 180);
+        background: rgba(163, 160, 180);
         outline: none;
-        border: 1px solid rgba(163 , 160 , 180);
+        border: 1px solid rgba(163, 160, 180);
         cursor: pointer;
         padding: 0.9em;
         -webkit-appearance: none;
@@ -397,7 +410,7 @@
         -o-transition: .5s all;
         -ms-transition: .5s all;
         transition: .5s all;
-        background: rgba(163 , 160 , 180);
+        background: rgba(163, 160, 180);
     }
 
     .agileits-top h2 {
@@ -420,7 +433,6 @@
 
     .agileits-top h2 a:hover {
         color: rgb(119, 101, 231)
-       
     }
 
     /*-- //main --*/
@@ -431,10 +443,11 @@
         font-weight: 200;
         cursor: pointer;
         position: relative;
+        
     }
 
     input.checkbox {
-        background: rgba(163 , 160 , 180);
+        background: rgba(163, 160, 180);
         cursor: pointer;
         width: 1.2em;
         height: 1.2em;
@@ -948,15 +961,6 @@
             padding: 1em 0 0;
         }
     }
-    select{
-        margin-top:20px;
-        margin-left:30px;
-        color:white;
-        font-weight: bold;
-        background-color: rgba(37, 37, 37, 0.192);
-    }
-
 </style>
 
-
-{% endblock content %}
+{% endblock %}
