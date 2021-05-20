@@ -366,7 +366,8 @@ def success(request):
         'distance': distance,
         'minutes':minutes,
         'mapImage':mapImage,
-        'reservation':reservation
+        'reservation':reservation,
+        "lot":lot,
     }
 
     
