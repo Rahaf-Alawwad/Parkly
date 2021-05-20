@@ -18,10 +18,10 @@ class Lot(models.Model):
     name = models.CharField(verbose_name="Business Name", max_length=255)
     location = models.CharField(verbose_name="Address",max_length=255, null=True)
     image = models.CharField(max_length=255, null=True, default="https://cache3.pakwheels.com/assets/dealers/original/missing.png")
-    available_parking = models.PositiveIntegerField(null=False)
+    available_parking = models.CharField(max_length=2,null=False)
     owner = models.OneToOneField(User , related_name="owner" ,on_delete=models.CASCADE, null=True) ## each lot has one owner
     is_reentry_allowed = models.BooleanField(null=True, default=False)
-    price =  models.DecimalField(verbose_name="Price per parking",max_digits=10,null=False,decimal_places=2, default=10)
+    price =  models.CharField(max_length=3 ,verbose_name="Price per parking",null=False, default='10')
     def __str__(self):
         return self.name
 

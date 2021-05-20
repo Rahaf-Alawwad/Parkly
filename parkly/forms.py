@@ -12,7 +12,7 @@ class RegisterBusinessForm(ModelForm):
 
     class Meta:
         model = Lot
-        fields = ('name','location','available_parking',"is_reentry_allowed","price",)
+        fields = ('name','location','available_parking',"price","is_reentry_allowed")
 
 
 class mapForm(ModelForm):
