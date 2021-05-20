@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="{% static 'uploads/favicon.png' %}" type="image/x-icon">
+    {% comment %} <link rel="shortcut icon" href="{% static 'uploads/favicon.png' %}" type="image/x-icon"> {% endcomment %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parkly</title>
@@ -67,7 +67,7 @@
     .footer-dark {
 
         padding: 50px 0;
-        color: gray;
+        color: rgb(0, 0, 0);
         background-color: rgba(222, 200, 243, 0.452);
     
     }
@@ -91,6 +91,7 @@
         color: inherit;
         text-decoration: none;
         opacity: 0.6;
+        font-weight:bolder;
     }
 
     .footer-dark ul a:hover {
@@ -127,6 +128,10 @@
         font-size: 13px;
         margin-bottom: 0;
     }
+    input{
+    color:black;
+    background-color:white
+}
 </style>
 
 <body style="width:100%">
@@ -134,7 +139,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-light"
         style="padding: 0.3% 2%;border-bottom:4px solid rgb(116, 110, 148);font-size: 2.5vh;background-color: rgba(222, 200, 243, 0.452);">
-        <a class="navbar-brand " href="/home"> <img id="logo" src="{% static 'uploads/logo2_auto_x2.png' %}" alt="logo"
+        <a class="navbar-brand " href="{%url 'home'%}"> <img id="logo" src="{% static 'uploads/logo2_auto_x2.png' %}" alt="logo"
                 width="100vh"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,11 +154,19 @@
                         href="{% url 'home' %}">Home
                     </a>
                 </li>
+                {% if user.user_type == "2"%}
                 <li class="nav-item">
                     <a class="nav-link" onmouseover="this.style.color = 'rgb(119, 101, 231)'"
                         onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;"
-                        href="/parking">Reserve</a>
+                        href="/lot/reservation">Reservations</a>
                 </li>
+                {%else%}
+                        <li class="nav-item">
+                    <a class="nav-link" onmouseover="this.style.color = 'rgb(119, 101, 231)'"
+                        onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;"
+                        href="/reservations">Reservations</a>
+                </li>
+                {% endif %}
             </ul>
 
             <div class="topnav">

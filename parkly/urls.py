@@ -23,7 +23,7 @@ urlpatterns = [
     #PayPal
 	path('simple-checkout/', views.simpleCheckout, name="simple-checkout"),
     path('simple-checkout/success', views.success, name="success"),
-    path('contactus/', views.contactus),
+    path('contactus/', views.contactus, name="contactus"),
 
     
 ]
