@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1> Your Reservations </h1>
+
+{%if current.count > 0%}
+
+{% for reservation in current%}
+
+<div class="card" style="width:300px; margin:20px; display:inline-block">
+    <form action="{% url 'user_reservations_cancel' %}"method="POST">
+        {% csrf_token %}
+    <img class="card-img-top"
+        src="{{reservation.code}}" alt="Card image" height="250px">
+    <div class="card-body">
+        <h4  class="card-title">{{reservation.parking.park_ID}}</h4>
+        <input hidden="hidden" name="pk"  value={{reservation.id}}>
+        <p class="card-text">{{reservation.timeFrom}} - {{reservation.timeTo}}</p>
+
+        <button style="width:100%" type="submit" class="btn btn-outline-danger">
+             Cancel
+        </button>
+    </form>
+    </div>
+</div>
+{%endfor%}
+{%else%}
+<img style=" display:block;width:200px"src="https://image.freepik.com/free-vector/website-faq-section-user-helpdesk-customer-support-frequently-asked-questions-problem-solution-quiz-game-confused-man-cartoon-character_335657-3537.jpg" alt="empty">
+
+<h3 style="display:inline-block" > You have no Reservation </h3>
+<a href="/search"style="display:inline-block; font-size:20px"> Book now </a>
+{%endif%}
+
+{% endblock %}
