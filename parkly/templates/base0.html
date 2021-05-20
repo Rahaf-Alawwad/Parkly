@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="{% static 'uploads/favicon.png' %}" type="image/x-icon">
+    {% comment %} <link rel="shortcut icon" href="{% static 'uploads/favicon.png' %}" type="image/x-icon"> {% endcomment %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parkly</title>
@@ -131,7 +131,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-light"
         style="padding: 0.3% 2%;border-bottom:4px solid rgb(116, 110, 148);font-size: 2.5vh;background-color: rgba(222, 200, 243, 0.452);">
-        <a class="navbar-brand " href="/home"> <img id="logo" src="{% static 'uploads/logo2_auto_x2.png' %}" alt="logo"
+        <a class="navbar-brand " href="{%url 'home'%}"> <img id="logo" src="{% static 'uploads/logo2_auto_x2.png' %}" alt="logo"
                 width="100vh"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
