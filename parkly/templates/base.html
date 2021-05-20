@@ -127,6 +127,14 @@
         font-size: 13px;
         margin-bottom: 0;
     }
+
+footer, .footer-dark{
+    clear: both;
+    position: absolute;
+    height: 300px;
+    margin-bottom: -600px;
+    width:100%;
+}
   
 </style>
 
@@ -157,11 +165,11 @@
 
             <div class="topnav">
                 <div class="search-container">
-                    <form method="POST" action="{% url 'search' %}">
+                    <form style="display:flex; flex-direction:row"method="POST" action="{% url 'search' %}">
                         {% csrf_token %}
-                       <input style="font-size:2.3vh" type="text" placeholder="Search venues" name="search">
+                       <input style="font-size:2.3vh; width:100%;display:inline-block; background-color:white;padding:6px;" type="text" placeholder="Search " name="search">
                         <button onmouseover="this.style.color = 'rgb(119, 101, 231)'"
-                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;"  class="btn btn-outline-dark m-2" type="submit" style="height:4.7vh"><i
+                onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;"  class="btn btn-outline-dark m-2" type="submit" style="display:inline-block;height:4.7vh"><i
                                 class="fa fa-search"></i></button>
                     </form>
                 </div>
@@ -178,7 +186,7 @@
                     register</a>
 
                 {%else%}
-                <h6 style="color:brown;display:inline-block; padding:0 6px" class="card-subtitle">Welcome, {{user}}</h6>
+                <h6 style="color:brown;display:inline-block; padding:0 6px;font-size:2.3vh;" class="card-subtitle">Welcome, {{user}}</h6>
                 <a onmouseover="this.style.color = 'rgb(119, 101, 231)'"
                 onmouseout="this.style.color = 'gray'" style="color: gray; font-weight: 600;" href="{% url 'profile' %}" style="font-size: 2vh;" type="button" class="btn btn-outline-dark m-2">
                     Profile</a>
