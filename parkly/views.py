@@ -331,9 +331,10 @@ def lot_scanner(request):
         return render (request, 'home.html')
 
 #paypal checkout
+@login_required()
 def simpleCheckout(request):
     return render (request, 'simple_checkout.html')
-
+@login_required()
 def success(request):
     reservation = Reservation.objects.filter(user=request.user).last()
     lot = reservation.parking.lot
@@ -371,14 +372,14 @@ def success(request):
     
     return render (request, 'confirmation.html',context)
 
-
+@login_required()
 def user_reservations(request):
     
     all_reservation=Reservation.objects.filter(user=request.user)
     current= all_reservation.filter(date__gte=date.today())
     return render (request, 'user_reservations.html', {"current":current})
 
-
+@login_required()
 def user_reservations_cancel(request):
     
     reservation = Reservation.objects.get(pk=request.POST.get("pk"))

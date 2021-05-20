@@ -1,0 +1,1 @@
+web: gunicorn Zeta_project.wsgi:application --log-file -

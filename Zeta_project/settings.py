@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+import django_heroku
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +29,7 @@ SECRET_KEY = 'django-insecure-9*jhf6%e6914o!tuy&^bed$+nub5(%d(c_hda9wak(d3c^ffy9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 CRISPY_TEMPLATE_PACK='bootstrap3'
 
@@ -79,13 +82,17 @@ WSGI_APPLICATION = 'Zeta_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
+
+DATABASES = {
+    'default': dj_database_url.config()
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -149,3 +156,7 @@ LOGOUT_REDIRECT_URL = "login"
 # Stripe Testing API for Payment
 STRIPE_SECRET_KEY = 'sk_test_51IrvjPJRtXQC3iPwTkm0fCf9tpc7Mb3oXlEa2zoymuaCL18b4NFd8vsBoodnfxU1LqLt5U1YCzf7Rxp7dNdDXNag00NxrKMWrj'
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51IrvjPJRtXQC3iPwA5g9Y8dybrT69HdWtkgWtFwWLdEDWzJ3k43nqy8SWncIL67W0HJgTtQLsbLeLt5BNLI9AQoT00geQW4qrF'
+
+
+STATIC_ROOT= os.path.join(BASE_DIR, 'static')
+django_heroku.settings(locals())
